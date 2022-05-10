@@ -1,7 +1,6 @@
 package com.PortfolioTracker.Security;
 
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import com.PortfolioTracker.Domain.User;
 
