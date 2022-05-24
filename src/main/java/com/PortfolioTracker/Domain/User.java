@@ -15,7 +15,7 @@ import javax.persistence.OneToMany;
 public class User {
 
 	private Long id;
-	private String userName;
+	private String username;
 	private String password;
 	private Set<Authorities> authorities;
 	
@@ -28,10 +28,10 @@ public class User {
 	}
 	@Column(nullable = false, unique = true)
 	public String getUserName() {
-		return userName;
+		return username;
 	}
 	public void setUserName(String userName) {
-		this.userName = userName;
+		this.username = userName;
 	}
 	public String getPassword() {
 		return password;

@@ -36,7 +36,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 			.anyRequest().hasAnyRole("USER").and()
 			.formLogin()
 			.loginPage("/login")
-			.defaultSuccessUrl("/dahsboard")
+			.defaultSuccessUrl("/dashboard")
 			.permitAll();
 	}
 	

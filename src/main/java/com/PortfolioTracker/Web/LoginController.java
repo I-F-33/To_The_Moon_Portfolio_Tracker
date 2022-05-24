@@ -26,7 +26,8 @@ public class LoginController {
 	}
 	
 	@PostMapping("/signup")
-	public User createUser (@PathVariable User user) {
+	public String createUser (@PathVariable User user) {
 		userService.saveUser(user);
+		return"redirect:/login";
 	}
 }
