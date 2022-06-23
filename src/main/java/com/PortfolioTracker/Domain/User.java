@@ -11,9 +11,20 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.PortfolioTracker.DTO.SignUpDTO;
+
 @Entity
 public class User {
 
+	public User() {}
+	
+	public User(SignUpDTO user) {
+		this.id = user.getId();
+		this.authorities = user.getAuthorities();
+		this.password = user.getPassword();
+		this.username = user.getUsername();
+	}
+	
 	private Long id;
 	private String username;
 	private String password;

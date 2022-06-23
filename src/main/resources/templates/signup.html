@@ -10,10 +10,10 @@
     <h3>Sign up below and enjoy the volatile ride reflected by your portfolio</h3>
     <form th:action="@{/signup}" method="post">
         <div>
-            Enter Username: <input type="text" th:field="${user.username}">
+            Enter Username: <input th:type="text" th:field="${user.username}">
         </div>
         <div>
-            Enter Password: <input type="password" th:field="${user.password}">
+            Enter Password: <input th:type="password" th:field="${user.password}">
         </div>
         <div>
             <input type="submit" value="Create Account">
