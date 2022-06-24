@@ -7,17 +7,17 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.PortfolioTracker.Domain.User;
-import com.PortfolioTracker.Service.UserService;
+import com.PortfolioTracker.Repository.UserRepository;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
 	@Autowired
-	private UserService userService;
+	private UserRepository userRepo;
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		User user = userService.findByUserName(username);
+		User user = userRepo.findByUsername(username);
 		
 		if(user == null) {
 			throw new UsernameNotFoundException("Username and/or Passowrd was not found. Please try again.");

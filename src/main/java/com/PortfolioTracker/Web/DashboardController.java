@@ -1,13 +1,14 @@
 package com.PortfolioTracker.Web;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class DashboardController {
 
-	@PostMapping("/logout")
-	public void logout() {
-		
+	@GetMapping("/dashboard")
+	public String displayDashboard(ModelMap model) {
+		return "dashboard.html";
 	}
 }

@@ -9,10 +9,7 @@ import com.PortfolioTracker.Domain.User;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 
-	@Query(value = "select u from User u " +
-			       "left join fetch authorities.u " +
-			       "where u.username = :username", 
-			       nativeQuery = true)
+
 	public User findByUsername(String username);
 
 }

@@ -33,22 +33,12 @@ public class UserService {
 		authority.setAuthority("ROLE_USER");
 		userRepo.save(user);
 		authRepo.save(authority);
-		Authorities authority2 = new Authorities();
-		authority2.setUser(user);
-		
-		if(user.getInvestmentStrategy().equals("Bear")) {
-			authority2.setAuthority("ROLE_BEAR");
-			authRepo.save(authority2);
-		} else if(user.getInvestmentStrategy().equals("Bull")){
-			authority2.setAuthority("ROLE_BULL");
-			authRepo.save(authority2);
-		}
 		
 		return user;
 	}
 	
 	public User findById(User user) {
-		return userRepo.findById(user.getId()).get();
+		return userRepo.getById(user.getId());
 	}
 	
 }

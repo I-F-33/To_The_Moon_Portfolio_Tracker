@@ -28,7 +28,7 @@ public class Authorities implements GrantedAuthority {
 	}
 
 	@ManyToOne
-	@JoinColumn(name = "user_id")
+	@JoinColumn(name = "user")
 	public User getUser() {
 		return user;
 	}

@@ -23,29 +23,29 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
+	//this method does authentication
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.userDetailsService(userDetailsService)
 		    .passwordEncoder(passwordEncoder);
 	}
 	
+	//this method does authorization
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
-			.antMatchers("/signup").anonymous()
-			.anyRequest().hasAnyRole("USER").and()
+				.antMatchers("/signup").anonymous()
+				.antMatchers("/dashboard").authenticated()
+				.and()
 			.formLogin()
-			.loginPage("/login")
-			.defaultSuccessUrl("/dashboard")
-			.permitAll()
-			.and()
+				.loginPage("/login")
+				.defaultSuccessUrl("/dashboard")
+				.permitAll()
+				.and()
 			.logout()
-			.invalidateHttpSession(false)
-			.logoutUrl("/logout")
-			.logoutSuccessUrl("/login")
-			.and()
-			.csrf()
-			.disable();
+				.invalidateHttpSession(false)
+				.logoutUrl("/logout")
+				.logoutSuccessUrl("/login");
 	}
 	
 }
