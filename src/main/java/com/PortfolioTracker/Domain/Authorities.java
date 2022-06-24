@@ -1,9 +1,11 @@
 package com.PortfolioTracker.Domain;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -16,13 +18,6 @@ public class Authorities implements GrantedAuthority {
 	private String authority;
 	private User user;
 	
-	public Authorities(String authority, User user) {
-		this.authority = authority;
-		this.user = user;
-	};
-	
-	public Authorities() {};
-	
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	public Long getId() {
 		return id;
@@ -33,6 +28,7 @@ public class Authorities implements GrantedAuthority {
 	}
 
 	@ManyToOne
+	@JoinColumn(name = "user_id")
 	public User getUser() {
 		return user;
 	}
@@ -46,6 +42,7 @@ public class Authorities implements GrantedAuthority {
 	}
 
 	@Override
+	@Column
 	public String getAuthority() {
 		return null;
 	}

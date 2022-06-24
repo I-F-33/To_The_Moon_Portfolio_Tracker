@@ -2,13 +2,8 @@ package com.PortfolioTracker.Web;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 
-import com.PortfolioTracker.DTO.SignUpDTO;
-import com.PortfolioTracker.Domain.User;
 import com.PortfolioTracker.Service.UserService;
 
 @Controller
@@ -20,6 +15,5 @@ public class LoginController {
 	@GetMapping("/login")
 	public String login() {
 		return "login.html";
-	}
-	
+	}	
 }

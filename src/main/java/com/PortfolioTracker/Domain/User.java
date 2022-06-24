@@ -11,21 +11,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
-import com.PortfolioTracker.DTO.SignUpDTO;
-
 @Entity
 public class User {
-
-	public User() {}
 	
-	public User(SignUpDTO user) {
-		this.id = user.getId();
-		this.authorities = user.getAuthorities();
-		this.password = user.getPassword();
-		this.username = user.getUsername();
-	}
-	
-	private Long id;
+	private Long user_id;
 	private String username;
 	private String password;
 	private Set<Authorities> authorities;
@@ -33,17 +22,17 @@ public class User {
 	
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	public Long getId() {
-		return id;
+		return user_id;
 	}
 	public void setId(Long id) {
-		this.id = id;
+		this.user_id = id;
 	}
 	@Column(nullable = false, unique = true)
-	public String getUserName() {
+	public String getUsername() {
 		return username;
 	}
-	public void setUserName(String userName) {
-		this.username = userName;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 	public String getPassword() {
 		return password;
@@ -51,7 +40,7 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	@OneToMany(fetch=FetchType.LAZY, cascade=CascadeType.ALL, mappedBy="user")
+	@OneToMany(fetch=FetchType.LAZY, cascade=CascadeType.ALL, mappedBy="user", orphanRemoval = true)
 	public Set<Authorities> getAuthorities() {
 		return authorities;
 	}
