@@ -1,5 +1,7 @@
 package com.PortfolioTracker.Service;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +26,10 @@ public class UserService {
 	public User createUser(SignUpDTO user) {
 		User userToBeCreated = new User(user);
 		return userToBeCreated;
+	}
+	
+	public User findById(User user) {
+		return userRepo.findById(user.getId()).get();
 	}
 	
 }

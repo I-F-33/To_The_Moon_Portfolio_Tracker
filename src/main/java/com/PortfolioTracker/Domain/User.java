@@ -29,6 +29,7 @@ public class User {
 	private String username;
 	private String password;
 	private Set<Authorities> authorities;
+
 	
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
 	public Long getId() {
@@ -57,5 +58,6 @@ public class User {
 	public void setAuthorities(Set<Authorities> authorities) {
 		this.authorities = authorities;
 	}
+
 	
 }
