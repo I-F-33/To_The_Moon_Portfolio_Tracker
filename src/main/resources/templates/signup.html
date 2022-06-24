@@ -16,6 +16,13 @@
             Enter Password: <input th:type="password" th:field="${user.password}">
         </div>
         <div>
+        	Would you consider yourself a BEAR or a BULL? Please select one: 
+        	<select th:field="${user.investmentStrategy}">
+        		<option th:value="Bear" th:text="Bear"></option>
+        		<option th:value="Bull" th:text="Bull"></option>
+        	</select>
+        </div>
+        <div>
             <input type="submit" value="Create Account">
         </div>
     </form>

@@ -42,9 +42,8 @@ public class Authorities implements GrantedAuthority {
 	}
 
 	@Override
-	@Column
 	public String getAuthority() {
-		return null;
+		return authority;
 	}
 
 }

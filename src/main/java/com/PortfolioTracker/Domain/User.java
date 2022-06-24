@@ -18,6 +18,7 @@ public class User {
 	private String username;
 	private String password;
 	private Set<Authorities> authorities;
+	private String investmentStrategy;
 
 	
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -40,13 +41,20 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	@OneToMany(fetch=FetchType.LAZY, cascade=CascadeType.ALL, mappedBy="user", orphanRemoval = true)
+	@OneToMany(fetch=FetchType.LAZY, cascade=CascadeType.ALL, mappedBy="user")
 	public Set<Authorities> getAuthorities() {
 		return authorities;
 	}
 	public void setAuthorities(Set<Authorities> authorities) {
 		this.authorities = authorities;
 	}
+	public String getInvestmentStrategy() {
+		return investmentStrategy;
+	}
+	public void setInvestmentStrategy(String investmentStrategy) {
+		this.investmentStrategy = investmentStrategy;
+	}
+	
 
 	
 }
