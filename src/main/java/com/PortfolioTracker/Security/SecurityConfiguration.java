@@ -35,17 +35,17 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
 				.antMatchers("/signup").anonymous()
-				.antMatchers("/dashboard").authenticated()
+				.antMatchers("/dashboard").hasAnyRole("USER")
 				.and()
 			.formLogin()
 				.loginPage("/login")
 				.defaultSuccessUrl("/dashboard")
-				.permitAll()
+				.permitAll();
+	/*		.logout() 
 				.and()
-			.logout()
 				.invalidateHttpSession(false)
 				.logoutUrl("/logout")
-				.logoutSuccessUrl("/login");
+				.logoutSuccessUrl("/login");         */
 	}
 	
 }
