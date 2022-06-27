@@ -9,7 +9,11 @@ public class DashboardController {
 
 	@GetMapping("/landingpage")
 	public String displayDashboard(ModelMap model) {
-		return "dashboard.html";
+		return "landing_page.html";
 	}
 	
+	@GetMapping("")
+	public String directToLandingPage() {
+		return "redirect:/landing_page.html";
+	}
 }
