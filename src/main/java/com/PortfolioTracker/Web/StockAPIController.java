@@ -1,20 +1,28 @@
 package com.PortfolioTracker.Web;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
+
+import com.PortfolioTracker.DTO.StockEODDataResponse;
+import com.PortfolioTracker.Service.StockAPIService;
 
 @RestController
 public class StockAPIController {
 
-	
 	@Autowired
-	private RestTemplate restTemplate;
-	@Value("${stock.base.url}")
-	private String baseUrl;
-	@Value("${stock.api.key}")
-	private String key;
+	StockAPIService stockService;
+	
+	@GetMapping("/myPortfolio/{stockID}/chart")
+	public ResponseEntity<StockEODDataResponse> getStockChart(@PathVariable long stockId, 
+			String symbols, Optional<String> dateFrom, Optional<String> dateTo) 
+	{
+		return stockService.fetchCustomEODDataResponse(symbols, dateFrom, dateTo);
+	}
 	
 	
 	

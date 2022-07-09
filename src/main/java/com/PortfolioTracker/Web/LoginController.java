@@ -16,4 +16,9 @@ public class LoginController {
 	public String login() {
 		return "login.html";
 	}	
+	
+	@GetMapping("")
+	public String directToLoginPage() {
+		return "redirect:/login.html";
+	}
 }
