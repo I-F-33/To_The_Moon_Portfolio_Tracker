@@ -12,8 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.PortfolioTracker.DTO.StockEODDataPoint;
 import com.PortfolioTracker.DTO.StockEODDataResponse;
-import com.sun.jndi.toolkit.url.Uri;
 
 @Service
 public class StockAPIService {
@@ -34,31 +34,37 @@ public class StockAPIService {
 		}
 	}
 
-	public ResponseEntity<StockEODDataResponse> fetchCustomStockData(String symbols, Optional<String> dateFrom, Optional<String> dateTo)
+	public ResponseEntity<StockEODDataResponse> fetchCustomStockData
+	(String symbols, Optional<String> dateFrom, Optional<String> dateTo, Optional<String> exchange, 
+			Optional<String> sort, Optional<Integer> limit, Optional<Integer> offset)
 	{
 		
 		URI uri = UriComponentsBuilder.fromHttpUrl(baseUrl.concat("eod"))
 									  .queryParam("access_key", key)
 									  .queryParam("symbols", symbols)
+									  .queryParamIfPresent("exchange", exchange)
+									  .queryParamIfPresent("sort", sort)
+									  .queryParamIfPresent("limit", limit)
 									  .queryParamIfPresent("date_from", dateFrom)
 									  .queryParamIfPresent("date_to", dateTo)
+									  .queryParamIfPresent("offset", offset)
 									  .build()
 									  .toUri();
 	  return restTemplate.getForEntity(uri, StockEODDataResponse.class);
 	}
 	
-	public ResponseEntity<StockEODDataResponse> fetchLatestStockData(String symbols) 
+	public ResponseEntity<StockEODDataPoint> fetchLatestStockData(String symbols) 
 	{
 		URI uri = UriComponentsBuilder.fromHttpUrl(baseUrl.concat("/eod/latest"))
 									  .queryParam("access_key", key)
 									  .queryParam("symbols", symbols)
 									  .build()
 									  .toUri();
-		return restTemplate.getForEntity(uri, StockEODDataResponse.class);
+		return restTemplate.getForEntity(uri, StockEODDataPoint.class);
 									  
 	}
 	
-	public ResponseEntity<>
+	//public ResponseEntity<>
 	
 }
 

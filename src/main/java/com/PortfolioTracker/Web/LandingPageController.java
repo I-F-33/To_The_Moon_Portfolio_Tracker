@@ -12,8 +12,5 @@ public class LandingPageController {
 		return "landing_page.html";
 	}
 	
-	@GetMapping("")
-	public String directToLandingPage() {
-		return "redirect:/landing_page.html";
-	}
+	
 }

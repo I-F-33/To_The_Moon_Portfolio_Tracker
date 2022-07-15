@@ -1,21 +1,16 @@
 package com.PortfolioTracker.DTO;
 
+import java.util.List;
+
 public class StockEODDataResponse {
 
-	private PaginationInfo pagination;
-	private StockEODData data;
-	
-	public PaginationInfo getPagination() {
-		return pagination;
+	private List<StockEODDataPoint> response;
+
+	public List<StockEODDataPoint> getResponse() {
+		return response;
 	}
-	public void setPagination(PaginationInfo pagination) {
-		this.pagination = pagination;
+
+	public void setResponse(List<StockEODDataPoint> response) {
+		this.response = response;
 	}
-	public StockEODData getData() {
-		return data;
-	}
-	public void setData(StockEODData data) {
-		this.data = data;
-	}
-	
 }
