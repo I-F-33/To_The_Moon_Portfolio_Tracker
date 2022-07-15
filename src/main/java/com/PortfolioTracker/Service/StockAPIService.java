@@ -34,7 +34,7 @@ public class StockAPIService {
 		}
 	}
 
-	public ResponseEntity<StockEODDataResponse> fetchCustomStockData
+	public ResponseEntity<StockEODDataPoint> fetchCustomStockData
 	(String symbols, Optional<String> dateFrom, Optional<String> dateTo, Optional<String> exchange, 
 			Optional<String> sort, Optional<Integer> limit, Optional<Integer> offset)
 	{
@@ -50,7 +50,11 @@ public class StockAPIService {
 									  .queryParamIfPresent("offset", offset)
 									  .build()
 									  .toUri();
-	  return restTemplate.getForEntity(uri, StockEODDataResponse.class);
+		
+		ResponseEntity<StockEODDataPoint> response = restTemplate.getForEntity(uri, StockEODDataPoint.class);
+		System.out.println(response.getBody().toString());
+		
+	  return restTemplate.getForEntity(uri, StockEODDataPoint.class);
 	}
 	
 	public ResponseEntity<StockEODDataPoint> fetchLatestStockData(String symbols) 

@@ -17,7 +17,7 @@ public class StockAPIController {
 	StockAPIService stockService;
 	
 	@GetMapping("/myPortfolio/chart")
-	public ResponseEntity<StockEODDataResponse> getStockChart
+	public ResponseEntity<?> getStockChart
 		(String symbols, Optional<String> dateFrom, Optional<String> dateTo,Optional<String> exchange, 
 				Optional<String> sort, Optional<Integer> limit, Optional<Integer> offset) 
 	{

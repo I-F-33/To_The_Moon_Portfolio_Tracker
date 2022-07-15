@@ -1,10 +1,16 @@
 package com.PortfolioTracker.DTO;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class PaginationInfo {
 
+	@JsonProperty("limit")
 	private Integer limit;
+	@JsonProperty("offset")
 	private Integer offset;
+	@JsonProperty("count")
 	private Integer count;
+	@JsonProperty("total")
 	private Integer total;
 	
 	public Integer getLimit() {

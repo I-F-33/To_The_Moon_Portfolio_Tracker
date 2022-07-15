@@ -13,4 +13,11 @@ public class StockEODDataResponse {
 	public void setResponse(List<StockEODDataPoint> response) {
 		this.response = response;
 	}
+
+	@Override
+	public String toString() {
+		return "StockEODDataResponse [response=" + response + "]";
+	}
+	
+	
 }

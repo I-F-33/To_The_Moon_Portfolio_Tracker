@@ -1,22 +1,38 @@
 package com.PortfolioTracker.DTO;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class StockEODData {
 
+	@JsonProperty("open")
 	private Double open;
+	@JsonProperty("high")
 	private Double high;
+	@JsonProperty("low")
 	private Double low;
+	@JsonProperty("close")
 	private Double close;
+	@JsonProperty("volume")
 	private Double volume;
+	@JsonProperty("adj_high")
 	private Double adj_high;
+	@JsonProperty("adj_low")
 	private Double adj_low;
+	@JsonProperty("adj_close")
 	private Double adj_close;
+	@JsonProperty("adj_open")
 	private Double adj_open;
+	@JsonProperty("adj_volume")
 	private Double adj_volume;
+	@JsonProperty("split_factor")
 	private Double split_factor;
+	@JsonProperty("dividend")
 	private Double dividend;
+	@JsonProperty("symbol")
 	private String symbol;
+	@JsonProperty("exchange")
 	private String exchange;
+	@JsonProperty("date")
 	private String date;
 	
 	public Double getOpen() {
