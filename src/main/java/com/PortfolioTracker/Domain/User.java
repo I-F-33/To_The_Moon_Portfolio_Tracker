@@ -18,7 +18,8 @@ public class User {
 	private String username;
 	private String password;
 	private Set<Authorities> authorities;
-	private String investmentStrategy;
+	private Set<Stock> stocks;
+	private Set<Crypto> cryptos;
 
 	
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -48,11 +49,23 @@ public class User {
 	public void setAuthorities(Set<Authorities> authorities) {
 		this.authorities = authorities;
 	}
-	public String getInvestmentStrategy() {
-		return investmentStrategy;
+	
+	@OneToMany(fetch=FetchType.LAZY, cascade=CascadeType.ALL, mappedBy="user")
+	public Set<Stock> getStocks() {
+		return stocks;
 	}
-	public void setInvestmentStrategy(String investmentStrategy) {
-		this.investmentStrategy = investmentStrategy;
+	public void setStocks(Set<Stock> stocks) {
+		this.stocks = stocks;
+	}
+	
+	@OneToMany(fetch=FetchType.LAZY, cascade=CascadeType.ALL, mappedBy="user")
+	public Set<Crypto> getCryptos() {
+		return cryptos;
+	}
+	
+
+	public void setCryptos(Set<Crypto> cryptos) {
+		this.cryptos = cryptos;
 	}
 	
 
