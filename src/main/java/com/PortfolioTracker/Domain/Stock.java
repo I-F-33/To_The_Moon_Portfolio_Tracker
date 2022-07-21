@@ -11,7 +11,7 @@ import javax.persistence.ManyToOne;
 public class Stock {
 	
 	private Long id;
-	private Long symbol;
+	private String symbol;
 	private User user;
 	
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -21,10 +21,10 @@ public class Stock {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public Long getSymbol() {
+	public String getSymbol() {
 		return symbol;
 	}
-	public void setSymbol(Long symbol) {
+	public void setSymbol(String symbol) {
 		this.symbol = symbol;
 	}
 	
