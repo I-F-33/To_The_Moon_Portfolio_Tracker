@@ -12,8 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.PortfolioTracker.DTO.StockEODDataPoint;
 import com.PortfolioTracker.DTO.StockEODDataResponse;
+import com.PortfolioTracker.DTO.StockTickerDataResponse;
 
 @Service
 public class StockAPIService {
@@ -34,7 +34,8 @@ public class StockAPIService {
 		}
 	}
 
-	public ResponseEntity<StockEODDataPoint> fetchCustomStockData
+	//fetches data with the user input parameters
+	public ResponseEntity<StockEODDataResponse> fetchCustomStockData
 	(String symbols, Optional<String> dateFrom, Optional<String> dateTo, Optional<String> exchange, 
 			Optional<String> sort, Optional<Integer> limit, Optional<Integer> offset)
 	{
@@ -51,24 +52,35 @@ public class StockAPIService {
 									  .build()
 									  .toUri();
 		
-		ResponseEntity<StockEODDataPoint> response = restTemplate.getForEntity(uri, StockEODDataPoint.class);
+		ResponseEntity<StockEODDataResponse> response = restTemplate.getForEntity(uri, StockEODDataResponse.class);
 		System.out.println(response.getBody().toString());
 		
-	  return restTemplate.getForEntity(uri, StockEODDataPoint.class);
+	  return restTemplate.getForEntity(uri, StockEODDataResponse.class);
 	}
 	
-	public ResponseEntity<StockEODDataPoint> fetchLatestStockData(String symbols) 
+	//fetches stock data for selected symbol, predetermined parameters
+	public ResponseEntity<StockEODDataResponse> fetchLatestStockData(String symbols) 
 	{
 		URI uri = UriComponentsBuilder.fromHttpUrl(baseUrl.concat("/eod/latest"))
 									  .queryParam("access_key", key)
 									  .queryParam("symbols", symbols)
 									  .build()
 									  .toUri();
-		return restTemplate.getForEntity(uri, StockEODDataPoint.class);
+		return restTemplate.getForEntity(uri, StockEODDataResponse.class);
 									  
 	}
 	
-	//public ResponseEntity<>
+	
+	//fetch stock ticker symbol, primarily for search bar data
+	public ResponseEntity<StockTickerDataResponse> fetchStockTickerData() 
+	{
+		URI uri = UriComponentsBuilder.fromHttpUrl(baseUrl.concat("/tickers"))
+				.queryParam("access_key", key)
+				.build()
+				.toUri();
+		
+		return restTemplate.getForEntity(uri, StockTickerDataResponse.class);
+	}
 	
 }
 

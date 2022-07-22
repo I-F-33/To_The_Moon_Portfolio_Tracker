@@ -5,11 +5,11 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
-public class LandingPageController {
+public class DashboardController {
 
-	@GetMapping("/landingpage")
+	@GetMapping("/dashboard")
 	public String displayLandingPage(ModelMap model) {
-		return "landing_page.html";
+		return "dashboard.html";
 	}
 	
 	
