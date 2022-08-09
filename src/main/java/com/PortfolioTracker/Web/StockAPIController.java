@@ -16,13 +16,7 @@ public class StockAPIController {
 	@Autowired
 	StockAPIService stockService;
 	
-	@GetMapping("/myPortfolio/chart")
-	public ResponseEntity<?> getStockChart
-		(String symbols, Optional<String> dateFrom, Optional<String> dateTo,Optional<String> exchange, 
-				Optional<String> sort, Optional<Integer> limit, Optional<Integer> offset) 
-	{
-		return stockService.fetchCustomStockData(symbols, dateFrom, dateTo, exchange, sort, limit, offset);
-	}
+	
 	
 	
 	
