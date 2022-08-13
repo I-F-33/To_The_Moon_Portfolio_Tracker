@@ -1,9 +1,6 @@
 package com.PortfolioTracker.Service;
 
 import java.net.URI;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,8 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.PortfolioTracker.DTO.StockEODDataResponse;
-import com.PortfolioTracker.DTO.StockTickerDataResponse;
+import com.PortfolioTracker.DTO.DailyStockResponse;
 
 @Service
 public class StockAPIService {
@@ -25,6 +21,24 @@ public class StockAPIService {
 	@Value("${asset.api.key}")
 	private String key;
 	
+	public ResponseEntity<DailyStockResponse> fetchDailyStockData(String symbol) {
+		
+		URI uri = UriComponentsBuilder.fromHttpUrl(baseUrl)
+				                      .queryParam("function", "TIME_SERIES_DAILY")
+   									  .queryParam("symbol", symbol)
+   									  .queryParam("outputsize", "full")
+   									  .queryParam("datatype", "json")
+									  .queryParam("apikey", key)
+									  .build()
+									  .toUri();
+		
+		ResponseEntity<DailyStockResponse> response = restTemplate.getForEntity(uri, DailyStockResponse.class);
+		
+		System.out.println(response.getBody().toString());
+		
+		return restTemplate.getForEntity(uri, DailyStockResponse.class);
+									  
+	}
 	
 
 	
