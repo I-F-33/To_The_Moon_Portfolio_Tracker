@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.PortfolioTracker.DTO.DailyStockResponse;
+import com.PortfolioTracker.DTO.SearchEndpointResponse;
 import com.PortfolioTracker.Service.StockAPIService;
 
 @RestController
@@ -18,6 +19,11 @@ public class StockAPIController {
 	public ResponseEntity<DailyStockResponse> fetchDailyStockData(String symbol) {
 		return stockService.fetchDailyStockData(symbol);
 		
+	}
+	
+	@GetMapping("/bestMatches")
+	public ResponseEntity<SearchEndpointResponse> fetchBestMatchForKeyword(String keyword) {
+		return stockService.fetchBestReponseForKeyword(keyword);
 	}
 	
 	
