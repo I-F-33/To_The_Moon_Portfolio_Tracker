@@ -1,5 +1,7 @@
 package com.PortfolioTracker.DTO;
 
+import java.util.Map;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class DailyStockResponse {
@@ -9,26 +11,27 @@ public class DailyStockResponse {
 	
 
 	@JsonProperty("Time Series (Daily)")
-	private TimeSeries timeSeries;
-	
+	private Map<String, DailyStockData> dailyStockData;
+
+
 	public MetaData getMetaData() {
 		return metaData;
 	}
-	
+
+
 	public void setMetaData(MetaData metaData) {
 		this.metaData = metaData;
 	}
-	
-	public TimeSeries getTimeSeries() {
-		return timeSeries;
-	}
-	
-	public void setTimeSeries(TimeSeries timeSeries) {
-		this.timeSeries = timeSeries;
+
+
+	public Map<String, DailyStockData> getDailyStockData() {
+		return dailyStockData;
 	}
 
-	@Override
-	public String toString() {
-		return "DailyStockResponse [metaData=" + metaData + ", timeSeries=" + timeSeries + "]";
+
+	public void setDailyStockData(Map<String, DailyStockData> dailyStockData) {
+		this.dailyStockData = dailyStockData;
 	}
+	
+	
 }

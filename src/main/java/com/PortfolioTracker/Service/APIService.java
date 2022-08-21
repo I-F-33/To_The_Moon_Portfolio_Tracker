@@ -10,10 +10,9 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.PortfolioTracker.DTO.DailyStockResponse;
-import com.PortfolioTracker.DTO.SearchEndpointResponse;
 
 @Service
-public class StockAPIService {
+public class APIService {
 
 	@Autowired
 	private RestTemplate restTemplate;
@@ -38,23 +37,6 @@ public class StockAPIService {
 		return response;
 									  
 	}
-	
-	public ResponseEntity<SearchEndpointResponse> fetchBestReponseForKeyword(String keywords){
-		URI uri = UriComponentsBuilder.fromHttpUrl(baseUrl)
-									  .queryParam("function", "SYMBOL_SEARCH")
-									  .queryParam("keywords", keywords)
-									  .queryParam("datatype", "json")
-									  .queryParam("apikey", key)
-									  .build()
-									  .toUri();
-		
-		ResponseEntity<SearchEndpointResponse> response = restTemplate.getForEntity(uri, SearchEndpointResponse.class);
-		
-		System.out.println(response.getBody().toString());
-		return response;
-		
-	}
 
-	
 }
 
