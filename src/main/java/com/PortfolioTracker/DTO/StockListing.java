@@ -2,55 +2,55 @@ package com.PortfolioTracker.DTO;
 
 public class StockListing {
 
-	String symbol;
-	String name;
-	String sector;
-	String Industry;
+	String stockSymbol;
+	String stockName;
+	String stockSector;
+	String stockIndustry;
 	
 	public StockListing() {};
 	
 	public StockListing(String symbol, String name, String sector, String industry) {
-		this.symbol = symbol;
-		this.name = name;
-		this.sector = sector;
-		this.Industry = industry;
+		this.stockSymbol = symbol;
+		this.stockName = name;
+		this.stockSector = sector;
+		this.stockIndustry = industry;
 	}
 
 	public String getSymbol() {
-		return symbol;
+		return stockSymbol;
 	}
 
 	public void setSymbol(String symbol) {
-		this.symbol = symbol;
+		this.stockSymbol = symbol;
 	}
 
 	public String getName() {
-		return name;
+		return stockName;
 	}
 
 	public void setName(String name) {
-		this.name = name;
+		this.stockName = name;
 	}
 
 	public String getSector() {
-		return sector;
+		return stockSector;
 	}
 
 	public void setSector(String sector) {
-		this.sector = sector;
+		this.stockSector = sector;
 	}
 
 	public String getIndustry() {
-		return Industry;
+		return stockIndustry;
 	}
 
 	public void setIndustry(String industry) {
-		Industry = industry;
+		stockIndustry = industry;
 	}
 
 	@Override
 	public String toString() {
-		return "StockListing [symbol=" + symbol + ", name=" + name + ", sector=" + sector + ", Industry=" + Industry
+		return "StockListing [symbol=" + stockSymbol + ", name=" + stockName + ", sector=" + stockSector + ", Industry=" + stockIndustry
 				+ "]";
 	}
 	

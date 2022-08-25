@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.PortfolioTracker.DTO.DailyCryptoResponse;
 import com.PortfolioTracker.DTO.DailyStockResponse;
 
 @Service
@@ -36,6 +37,21 @@ public class APIService {
 		
 		return response;
 									  
+	}
+	
+	public ResponseEntity<DailyCryptoResponse> fetchDailyCryptoData(String symbol) {
+		
+		URI uri = UriComponentsBuilder.fromHttpUrl(baseUrl)
+									  .queryParam("function", "DIGITAL_CURRENCY_DAILY")
+									  .queryParam("symbol", symbol)
+									  .queryParam("market", "USD")
+									  .queryParam("apikey", key)
+									  .build()
+									  .toUri();
+		
+		ResponseEntity<DailyCryptoResponse> response = restTemplate.getForEntity(uri, DailyCryptoResponse.class);
+		
+		return response;
 	}
 
 }
