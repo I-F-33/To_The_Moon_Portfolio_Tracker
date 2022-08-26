@@ -15,4 +15,10 @@ public class LoginController {
 	public String directToLoginPage() {
 		return "redirect:/login.html";
 	}
+	
+	@GetMapping("/logout")
+	public String logout() {
+		
+		return "redirect:/login.html";
+	}
 }

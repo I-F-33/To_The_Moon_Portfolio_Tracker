@@ -1,9 +1,10 @@
 .banner{
-    background-image: url(/images/financial-data.jpg);
+    background-image: url(/images/banner-image.jpg);
 	background-repeat: no-repeat;
 	background-size: cover;
 	height: 600px;
 	display:flex;
+	flex-direction: column;
 	justify-content: center;
 	align-items: center;
 }

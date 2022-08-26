@@ -16,6 +16,8 @@ public class CustomSecurityUser extends User implements UserDetails{
 		this.setUsername(user.getUsername());
 		this.setPassword(user.getPassword());
 		this.setId(user.getId());
+		this.setCryptos(user.getCryptos());
+		this.setStocks(user.getStocks());
 	}
 	@Override
 	public String getUsername() {
