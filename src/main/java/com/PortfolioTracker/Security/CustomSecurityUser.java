@@ -19,10 +19,6 @@ public class CustomSecurityUser extends User implements UserDetails{
 		this.setCryptos(user.getCryptos());
 		this.setStocks(user.getStocks());
 	}
-	@Override
-	public String getUsername() {
-		return null;
-	}
 
 	@Override
 	public boolean isAccountNonExpired() {

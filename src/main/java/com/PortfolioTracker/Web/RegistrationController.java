@@ -16,8 +16,8 @@ public class RegistrationController {
 	private UserService userService;
 	
 	@GetMapping("/signup")
-	public String signUp(ModelMap model, User user) {
-		model.put("user", user);
+	public String signUp(ModelMap model) {
+		model.put("user", new User());
 		return "signup.html";
 		}
 	

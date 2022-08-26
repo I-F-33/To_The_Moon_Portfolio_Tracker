@@ -24,14 +24,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
-	//this method does authentication
+	//program authentication manager
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.userDetailsService(userDetailsService)
 		    .passwordEncoder(passwordEncoder);
 	}
 	
-	//this method does authorization
+	//program authorization manager
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
