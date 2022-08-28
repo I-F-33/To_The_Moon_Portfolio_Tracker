@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
@@ -66,5 +67,20 @@ public class FileService {
 		return null;
 		
 }
+	public List<StockListing> fetchMatchingStocks(String searchString) {
+		List<StockListing> stocks = parseStockCsvFileToList();
+		return stocks.stream()
+			  .filter(stock -> stock.getName().contains(searchString))
+			  .sorted()
+			  .collect(Collectors.toList());
+	}
+	
+	public List<CryptoListing> fetchMatchingCrypto(String searchString) {
+		List<CryptoListing> cryptos = parseCryptoCsvFileToList();
+		return cryptos.stream()
+					 .filter(crypto -> crypto.getName().contains(searchString))
+					 .sorted()
+					 .collect(Collectors.toList());
+	}
 	
 }
