@@ -24,7 +24,9 @@ public class DashboardController {
 	@Autowired
 	FileService fileService;
 	
+	
 	private Stack<Search> searches = new Stack<Search>();
+	
 	
 	@GetMapping("/dashboard")
 	public String displayDashboard(@AuthenticationPrincipal User user, ModelMap model) {
@@ -55,9 +57,12 @@ public class DashboardController {
 				
 	}
 	
-	
 	@PostMapping("/dashboard/results")
-	public String displayStockResults(@RequestBody Search search) {
+	public String displayStockResults(Search search) {
+		
+		if(searches.capacity() == 10) {
+			searches.clear();
+		}
 		searches.push(search);
 		System.out.println(search);
 		return "redirect:/dashboard/results";
