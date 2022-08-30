@@ -1,6 +1,6 @@
 package com.PortfolioTracker.DTO;
 
-public class CryptoListing {
+public class CryptoListing implements Comparable<CryptoListing>{
 
 	private String symbol;
 	private String name;
@@ -23,5 +23,10 @@ public class CryptoListing {
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	@Override
+	public int compareTo(CryptoListing o) {
+		return this.name.compareTo(o.name);
 	}
 }

@@ -8,9 +8,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import com.PortfolioTracker.DTO.CryptoListing;
 import com.PortfolioTracker.DTO.Search;
@@ -59,6 +57,9 @@ public class DashboardController {
 	
 	@PostMapping("/dashboard/results")
 	public String displayStockResults(Search search) {
+		if(search.getSearchType().equals("none")) {
+			return "redirect:/dashboard";
+		}
 		
 		if(searches.capacity() == 10) {
 			searches.clear();
