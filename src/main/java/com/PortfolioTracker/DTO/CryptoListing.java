@@ -29,4 +29,9 @@ public class CryptoListing implements Comparable<CryptoListing>{
 	public int compareTo(CryptoListing o) {
 		return this.name.compareTo(o.name);
 	}
+
+	@Override
+	public String toString() {
+		return "CryptoListing [symbol=" + symbol + ", name=" + name + "]";
+	}
 }

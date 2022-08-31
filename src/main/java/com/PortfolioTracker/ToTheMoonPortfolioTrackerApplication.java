@@ -4,8 +4,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
-import com.PortfolioTracker.Service.FileService;
-
 @ComponentScan(basePackages = {"com.PortfolioTracker"})
 @SpringBootApplication
 public class ToTheMoonPortfolioTrackerApplication {

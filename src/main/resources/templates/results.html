@@ -54,6 +54,55 @@
 			</div>
 		</div>
 	</nav>
+	<div th:if="${stocks !=  null}" class="overflow-x-auto relative shadow-md sm:rounded-lg">
+		<table
+			class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+			<thead
+				class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+				<tr>
+					<th scope="col" class="py-3 px-6">Stock name</th>
+					<th scope="col" class="py-3 px-6">Symbol</th>
+					<th scope="col" class="py-3 px-6">Sector</th>
+					<th scope="col" class="py-3 px-6">Industry</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="stock : ${stocks}" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+					<th th:text="${stock.name}" scope="row"
+						class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"></th>
+					<td th:text="${stock.symbol}" class="py-4 px-6"></td>
+					<td th:text="${stock.sector}" class="py-4 px-6"></td>
+					<td th:text="${stock.industry}" class="py-4 px-6">$</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div th:if="${cryptos !=  null}" class="overflow-x-auto relative shadow-md sm:rounded-lg">
+		<table
+			class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+			<thead
+				class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+				<tr>
+					<th scope="col" class="py-3 px-6">Crypto name</th>
+					<th scope="col" class="py-3 px-6">Crypto Symbol</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="crypto : ${cryptos}" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+					<th th:text="${crypto.name}" scope="row"
+						class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"></th>
+					<td th:text="${crypto.symbol}" class="py-4 px-6"></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	
+	
+	
 	<script src="https://unpkg.com/flowbite@1.5.2/dist/flowbite.js"></script>
 </body>
 </html>
+<!-- <th scope="col" class="py-3 px-6">Action</th> -->
+<!-- <td class="py-4 px-6"><a th:href="@/{userId}/myportfolio/delete(userId=${user.userId})"
+						class="font-medium text-blue-600 dark:text-red-500 hover:underline">Delete</a>
+					</td> -->

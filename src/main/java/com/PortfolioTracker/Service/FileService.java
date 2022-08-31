@@ -51,12 +51,13 @@ public class FileService {
 			reader.skip(1);
 			
 			String[] nextCrypto;
-			List<CryptoListing> crypto = new ArrayList<>();
+			List<CryptoListing> cryptos = new ArrayList<>();
 			
 			while((nextCrypto = reader.readNext()) != null) {
-				crypto.add(new CryptoListing(nextCrypto[0], nextCrypto[1]));
+				CryptoListing crypto = new CryptoListing(nextCrypto[0], nextCrypto[1]);
+				cryptos.add(crypto);
 			}
-			return crypto;
+			return cryptos;
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (CsvValidationException e) {
@@ -70,7 +71,7 @@ public class FileService {
 	public List<StockListing> fetchMatchingStocks(String searchString) {
 		List<StockListing> stocks = parseStockCsvFileToList();
 		return stocks.stream()
-			  .filter(stock -> stock.getName().contains(searchString))
+			  .filter(stock -> stock.getName().toLowerCase().contains(searchString.toLowerCase()))
 			  .sorted()
 			  .collect(Collectors.toList());
 	}
@@ -78,9 +79,9 @@ public class FileService {
 	public List<CryptoListing> fetchMatchingCrypto(String searchString) {
 		List<CryptoListing> cryptos = parseCryptoCsvFileToList();
 		return cryptos.stream()
-					 .filter(crypto -> crypto.getName().contains(searchString))
-					 .sorted()
-					 .collect(Collectors.toList());
+			 .filter(crypto -> crypto.getName().toLowerCase().contains(searchString.toLowerCase()))
+			 .sorted()
+			 .collect(Collectors.toList());
 	}
 	
 }

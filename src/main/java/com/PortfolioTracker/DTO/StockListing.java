@@ -1,57 +1,62 @@
 package com.PortfolioTracker.DTO;
 
-public class StockListing {
+public class StockListing implements Comparable<StockListing> {
 
-	String stockSymbol;
-	String stockName;
-	String stockSector;
-	String stockIndustry;
+	String symbol;
+	String name;
+	String sector;
+	String industry;
 	
 	public StockListing() {};
 	
 	public StockListing(String symbol, String name, String sector, String industry) {
-		this.stockSymbol = symbol;
-		this.stockName = name;
-		this.stockSector = sector;
-		this.stockIndustry = industry;
+		this.symbol = symbol;
+		this.name = name;
+		this.sector = sector;
+		this.industry = industry;
 	}
 
 	public String getSymbol() {
-		return stockSymbol;
+		return symbol;
 	}
 
 	public void setSymbol(String symbol) {
-		this.stockSymbol = symbol;
+		this.symbol = symbol;
 	}
 
 	public String getName() {
-		return stockName;
+		return name;
 	}
 
 	public void setName(String name) {
-		this.stockName = name;
+		this.name = name;
 	}
 
 	public String getSector() {
-		return stockSector;
+		return sector;
 	}
 
 	public void setSector(String sector) {
-		this.stockSector = sector;
+		this.sector = sector;
 	}
 
 	public String getIndustry() {
-		return stockIndustry;
+		return industry;
 	}
 
 	public void setIndustry(String industry) {
-		stockIndustry = industry;
+		this.industry = industry;
 	}
 
 	@Override
 	public String toString() {
-		return "StockListing [symbol=" + stockSymbol + ", name=" + stockName + ", sector=" + stockSector + ", Industry=" + stockIndustry
+		return "StockListing [symbol=" + symbol + ", name=" + name + ", sector=" + sector + ", Industry=" + industry
 				+ "]";
+	}
+
+	@Override
+	public int compareTo(StockListing o) {
+		return this.name.compareTo(o.name);
 	}
 	
 }

@@ -41,13 +41,15 @@ public class DashboardController {
 		//if search category is set to crypto
 		if (latestSearch.getSearchType().equals("Crypto")) {
 			List<CryptoListing> matchingCrypto = fileService.fetchMatchingCrypto(latestSearch.getSearchString());
-			model.put("Cryptos", matchingCrypto);
+			System.out.println(matchingCrypto.size());
+			model.put("cryptos", matchingCrypto);
 			return "results.html";
 			
 			//if search category is set to stock
 		} else if (latestSearch.getSearchType().equals("Stock")){
 			List<StockListing> matchingStocks = fileService.fetchMatchingStocks(latestSearch.getSearchString());
-			model.put("Stocks", matchingStocks);
+			System.out.println(matchingStocks.size());
+			model.put("stocks", matchingStocks);
 			return "results.html";
 		}
 		//if search fails return to dashboard
