@@ -4,8 +4,18 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>To The Moon</title>
-<link rel="stylesheet"
-	href="https://unpkg.com/flowbite@1.5.2/dist/flowbite.min.css" />
+	<link rel="stylesheet" href="https://unpkg.com/flowbite@1.5.2/dist/flowbite.min.css" />
+	<script src="https://cdn.anychart.com/releases/8.11.0/js/anychart-core.min.js"></script>
+    <script src="https://cdn.anychart.com/releases/8.11.0/js/anychart-stock.min.js"></script>
+    <script src="https://cdn.anychart.com/releases/8.11.0/js/anychart-data-adapter.min.js"></script>
+    <script src="https://cdn.anychart.com/releases/8.11.0/js/anychart-ui.min.js"></script>
+    <script src="https://cdn.anychart.com/releases/8.11.0/js/anychart-exports.min.js"></script>
+
+    <link href="https://cdn.anychart.com/releases/8.11.0/css/anychart-ui.min.css" type="text/css" rel="stylesheet">
+    <link href="https://cdn.anychart.com/releases/8.11.0/fonts/css/anychart-font.min.css" type="text/css" rel="stylesheet">	
+	<link rel="stylesheet" href="/css/chart.css" />
+	<script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
+    
 </head>
 <body>
 	<nav
@@ -53,6 +63,25 @@
 			</div>
 		</div>
 	</nav>
+	<div>
+		<input type="hidden" id="stock-asset" value='${stock.symbol}'/>
+		<div id="container"></div>
+	</div>
 	<script src="https://unpkg.com/flowbite@1.5.2/dist/flowbite.js"></script>
+	<script th:inline="javascript">
+	
+	
+	async function getData() {
+		var symbol = [[${stock.symbol}]];
+		var stockInfo = new Map();
+		let response = await fetch("/fetchDailyData/stock/"+symbol);
+	    let stockData = await response.json(); 
+	    stockInfo = stockData[`Time Series (Daily)`];
+	    console.log(stockInfo);
+	    
+	}
+	
+	getData();
+	</script>
 </body>
 </html>

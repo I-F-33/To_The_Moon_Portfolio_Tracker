@@ -1,5 +1,6 @@
 package com.PortfolioTracker.DTO;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -11,7 +12,7 @@ public class DailyStockResponse {
 	
 
 	@JsonProperty("Time Series (Daily)")
-	private Map<String, DailyStockData> dailyStockData;
+	private Map<String, DailyStockData> dailyStockData = new LinkedHashMap<String, DailyStockData>();
 
 
 	public MetaData getMetaData() {

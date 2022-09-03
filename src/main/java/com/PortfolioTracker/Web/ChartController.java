@@ -23,38 +23,5 @@ public class ChartController {
 	@Autowired
 	FileService fileService;
 	
-	@GetMapping("/chart/{name}")
-	public String fetchAssetChart(@AuthenticationPrincipal User user, @PathVariable String name, ModelMap model) {
-		List<CryptoListing> cryptoList = fileService.parseCryptoCsvFileToList();
-		List<StockListing> stockList = fileService.parseStockCsvFileToList();
-		
-		System.out.println(name);
-		model.put("user", user);
-		
-		//conditional checks if list of crypto contains crypto with matching asset name then fetches the matching crypto
-		//and adds to model
-		if(cryptoList.stream()
-					 .anyMatch(crypto -> crypto.getName().equalsIgnoreCase(name))) {
-			Optional<CryptoListing> matchingCrypto = cryptoList.stream()
-					  .filter(crypto -> crypto.getName().equalsIgnoreCase(name))
-					  .findFirst();
-			
-			model.put("crypto", matchingCrypto.get());
-			
-			return "chart.html";
-			
-		} else if(stockList.stream()
-							.anyMatch(stock -> stock.getName().equalsIgnoreCase(name))) {
-			Optional<StockListing> matchingStock = stockList.stream()
-					 .filter(stock -> stock.getName().equalsIgnoreCase(name))
-					 .findFirst();
-				
-				model.put("stock", matchingStock.get());
-				
-				return "chart.html";
-		} else {
-			model.put("search", new Search());
-			return "dashboard.html";
-		}
-	}
+	
 }

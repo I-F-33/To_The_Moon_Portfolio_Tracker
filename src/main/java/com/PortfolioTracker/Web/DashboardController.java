@@ -1,6 +1,7 @@
 package com.PortfolioTracker.Web;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Stack;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -44,16 +46,19 @@ public class DashboardController {
 			List<CryptoListing> matchingCrypto = fileService.fetchMatchingCrypto(latestSearch.getSearchString());
 			System.out.println(matchingCrypto.size());
 			model.put("cryptos", matchingCrypto);
+			searches.push(latestSearch);
 			return "results.html";
 			
 			//if search category is set to stock
 		} else if (latestSearch.getSearchType().equals("Stock")){
 			List<StockListing> matchingStocks = fileService.fetchMatchingStocks(latestSearch.getSearchString());
 			System.out.println(matchingStocks.size());
+			searches.push(latestSearch);
 			model.put("stocks", matchingStocks);
 			return "results.html";
 		}
 		//if search fails return to dashboard
+		searches.push(latestSearch);
 		return "redirect:/dashboard.html";
 				
 	}
@@ -70,6 +75,49 @@ public class DashboardController {
 		searches.push(search);
 		System.out.println(search);
 		return "redirect:/dashboard/results";
+	}
+	
+	@GetMapping("/dashboard/stock/chart/{name}")
+	public String fetchAssetChart(@AuthenticationPrincipal User user, @PathVariable String name, ModelMap model) {
+		List<CryptoListing> cryptoList = fileService.parseCryptoCsvFileToList();
+		List<StockListing> stockList = fileService.parseStockCsvFileToList();
+		
+		System.out.println(name);
+		model.put("user", user);
+		Search latestSearch = searches.pop();
+		
+		//conditional checks if list of crypto contains crypto with matching asset name then fetches the matching crypto
+		//and adds to model
+		
+		//models puts latest search to check what type of chart should be displayed
+		if(cryptoList.stream()
+					 .anyMatch(crypto -> crypto.getName().equalsIgnoreCase(name))) {
+			Optional<CryptoListing> matchingCrypto = cryptoList.stream()
+					  .filter(crypto -> crypto.getName().equalsIgnoreCase(name))
+					  .findFirst();
+			
+			
+			
+			model.put("crypto", matchingCrypto.get());
+			model.put("search", latestSearch);
+			
+			return "chart.html";
+			
+		} else if(stockList.stream()
+							.anyMatch(stock -> stock.getName().equalsIgnoreCase(name))) {
+			Optional<StockListing> matchingStock = stockList.stream()
+					 .filter(stock -> stock.getName().equalsIgnoreCase(name))
+					 .findFirst();
+				
+				System.out.println(matchingStock);
+				model.put("stock", matchingStock.get());
+				model.put("search", latestSearch);
+				
+				return "stock_chart.html";
+		} else {
+			model.put("search", new Search());
+			return "dashboard.html";
+		}
 	}
 	
 }

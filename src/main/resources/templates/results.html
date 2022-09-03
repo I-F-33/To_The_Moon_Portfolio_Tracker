@@ -41,10 +41,10 @@
 					<li><a th:href="@{/dashboard}"
 						class="block py-2 pr-4 pl-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white"
 						aria-current="page">Home</a></li>
-					<li><a th:href="@{/myportfolio/stocks}"
+					<li><a th:href="@{/dashboard}"
 						class="block py-2 pr-4 pl-3 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-white dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">My
 							Stocks</a></li>
-					<li><a th:href="@{/myportfolio/crypto}"
+					<li><a th:href="@{/dashboard}"
 						class="block py-2 pr-4 pl-3 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">My
 							Crypto</a></li>
 					<li><a th:href="@{/logout}"
@@ -69,7 +69,7 @@
 			<tbody>
 				<tr th:each="stock : ${stocks}" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
 					<th scope="row"
-						class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"><a th:text="${stock.name}" th:href="@{/chart/{name}(name = ${stock.name})}" ></a></th>
+						class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"><a th:text="${stock.name}" th:href="@{/dashboard/stock/chart/{name}(name = ${stock.name})}" ></a></th>
 					<td th:text="${stock.symbol}" class="py-4 px-6"></td>
 					<td th:text="${stock.sector}" class="py-4 px-6"></td>
 					<td th:text="${stock.industry}" class="py-4 px-6">$</td>
@@ -90,7 +90,7 @@
 			<tbody>
 				<tr th:each="crypto : ${cryptos}" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
 					<th scope="row"
-						class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"><a th:text="${crypto.name}" th:href="@{/chart/{name}(name = ${crypto.name})}"></a></th>
+						class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"><a th:text="${crypto.name}" th:href="@{/dashboard/crypto/chart/{name}(name = ${crypto.name})}"></a></th>
 					<td th:text="${crypto.symbol}" class="py-4 px-6"></td>
 				</tr>
 			</tbody>
@@ -100,7 +100,6 @@
 	
 	
 	<script src="https://unpkg.com/flowbite@1.5.2/dist/flowbite.js"></script>
-	<script src="/js/results.js" type="text/javascript"></script>
 </body>
 </html>
 <!-- <th scope="col" class="py-3 px-6">Action</th> -->

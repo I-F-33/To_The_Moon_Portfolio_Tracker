@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.PortfolioTracker.DTO.CryptoListing;
@@ -24,13 +25,13 @@ public class StockAPIController {
 	@Autowired
 	FileService fileService;
 	
-	@GetMapping("/myportfolio/stock")
-	public ResponseEntity<DailyStockResponse> fetchDailyStockData(String symbol) {
+	@GetMapping("/fetchDailyData/stock/{symbol}")
+	public ResponseEntity<DailyStockResponse> fetchDailyStockData(@PathVariable String symbol) {
 		return APIService.fetchDailyStockData(symbol);
 	}
 	
-	@GetMapping(value = "/myportfolio/crypto", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<DailyCryptoResponse> fetchDailyCryptoData(String symbol) {
+	@GetMapping("/fetchDailyData/crypto/{symbol}")
+	public ResponseEntity<DailyCryptoResponse> fetchDailyCryptoData(@PathVariable String symbol) {
 		return APIService.fetchDailyCryptoData(symbol);
 	}
 	
