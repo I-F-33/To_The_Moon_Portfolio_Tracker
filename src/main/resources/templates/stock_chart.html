@@ -65,23 +65,153 @@
 	</nav>
 	<div>
 		<input type="hidden" id="stock-asset" value='${stock.symbol}'/>
+		<input type="hidden" id="stock-asset" value='${stock.name}'/>
 		<div id="container"></div>
 	</div>
 	<script src="https://unpkg.com/flowbite@1.5.2/dist/flowbite.js"></script>
 	<script th:inline="javascript">
+	//transforms map of data to array of arrays to be consumed by anychart.js api
+	function dataMapToArray(stockInfo) {
+		let arrayOfDataArrays = [];	
+		
+		//map keys
+		let stockDataKeys = Object.keys(stockInfo);
+		
+		//map values = data objects
+		let stockDataObjectValues = Object.values(stockInfo);
 	
+		for(let i = 0; i < stockDataKeys.length; i++) {
+			let dataArray = [];
+			
+			//creates array of data object values
+			let dataPointObject = stockDataObjectValues[i];
+			let valuesOfDataObject = Object.values(dataPointObject);
+			
+			//adds key (Date) to first slot for anychart.js api consumption
+			valuesOfDataObject.unshift(stockDataKeys[i]);
+			
+			dataArray.push(valuesOfDataObject);
+			arrayOfDataArrays.push(dataArray);
+	}
+		return arrayOfDataArrays;
+	}
 	
-	async function getData() {
-		var symbol = [[${stock.symbol}]];
-		var stockInfo = new Map();
+	//fetches daily stock data for embedded symbol in model and returns a map of the data: keys = dates, values = data objects
+	async function getStockData() {
+		let symbol = [[${stock.symbol}]];
+		let stockInfo = new Map();
 		let response = await fetch("/fetchDailyData/stock/"+symbol);
 	    let stockData = await response.json(); 
 	    stockInfo = stockData[`Time Series (Daily)`];
-	    console.log(stockInfo);
 	    
+	    //reverses array so oldest date is at index 0
+	    let arrayOfDatas = dataMapToArray(stockInfo).reverse();
+	    
+	    return arrayOfDatas;
 	}
+	//array of data arrays
+	var data =  await getStockData();
 	
-	getData();
+	console.log(data);
+	
+	anychart.onDocumentReady(function () {
+		      
+		      // set chart theme
+		      anychart.theme('monochrome');
+		      
+		      // create data table on loaded data
+		      var dataTable = anychart.data.table();
+		      dataTable.addData(data);
+
+		      // map loaded data for the candlestick series
+		      var mapping = dataTable.mapAs({
+		        open: 1,
+		        high: 2,
+		        low: 3,
+		        close: 4,
+				volume: 5
+		      });
+
+		      // create stock chart
+		      var chart = anychart.stock();
+
+		      // create first plot on the chart
+		      var plot = chart.plot(0);
+		      
+		      // set grid settings
+		      plot.yGrid(true).xGrid(true).yMinorGrid(true).xMinorGrid(true);
+
+		     
+		      var series = plot.candlestick(mapping);
+		      series.name([[${stock.name}]]);
+		      series.legendItem().iconType('rising-falling');
+		      
+		       // create EMA indicators with period 50
+		      plot
+		        .ema(dataTable.mapAs({ value: 4 }))
+		        .series()
+		        .stroke('1.5 #455a64');
+		      
+		      // create envelope indicator
+		      chart.plot().env(mapping);
+
+		      
+		       // disable X axis for first plot
+		      plot.xAxis().enabled(false);
+		      
+		       // second plot to show macd values
+		      var macdPlot = chart.plot(1);
+
+		      var macdIndicator = macdPlot.macd(mapping);
+		      // set series type for histogram series.
+		      macdIndicator.histogramSeries('area');
+
+		      macdIndicator
+		        .histogramSeries()
+		        .normal()
+		        .fill('green .3')
+		        .stroke('green');
+		      macdIndicator
+		        .histogramSeries()
+		        .normal()
+		        .negativeFill('red .3')
+		        .negativeStroke('red');
+		    
+		      // set second plot's height
+		      macdPlot.height('40%');
+		      
+
+		      // create scroller series with mapped data
+		      chart.scroller().candlestick(mapping);
+
+		      // set chart selected date/time range
+		      chart.selectRange('2022-08-01', '2022-09-02');
+
+		      // create range picker
+		      var rangePicker = anychart.ui.rangePicker();
+		      
+		      // init range picker
+		      rangePicker.render(chart);
+
+		      // create range selector
+		      var rangeSelector = anychart.ui.rangeSelector();
+		      
+		      // init range selector
+		      rangeSelector.render(chart);
+		      
+		       // sets the title of the chart
+		      chart.title([[${stock.name}]]+ ' Stock Chart');
+		      
+		      // set container id for the chart
+		      chart.container('container');
+		      
+		      // initiate chart drawing
+		      chart.draw();
+		    
+		});
 	</script>
 </body>
 </html>
+<!--  
+
+	-->

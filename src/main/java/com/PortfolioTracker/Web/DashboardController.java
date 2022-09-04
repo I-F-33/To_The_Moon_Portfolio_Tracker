@@ -112,6 +112,7 @@ public class DashboardController {
 				System.out.println(matchingStock);
 				model.put("stock", matchingStock.get());
 				model.put("search", latestSearch);
+				searches.push(latestSearch);
 				
 				return "stock_chart.html";
 		} else {
