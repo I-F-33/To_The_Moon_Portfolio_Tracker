@@ -70,69 +70,69 @@
 	</div>
 	<script src="https://unpkg.com/flowbite@1.5.2/dist/flowbite.js"></script>
 	<script th:inline="javascript">
+
 	//transforms map of data to array of arrays to be consumed by anychart.js api
-	function dataMapToArray(stockInfo) {
-		let arrayOfDataArrays = [];	
+function dataMapToArray(stockInfo) {
+	let arrayOfDataArrays = [];	
+	
+	//map keys
+	let stockDataKeys = Object.keys(stockInfo);
+	
+	//map values = data objects
+	let stockDataObjectValues = Object.values(stockInfo);
+
+	for(let i = 0; i < stockDataKeys.length; i++) {
+		let dataArray = [];
 		
-		//map keys
-		let stockDataKeys = Object.keys(stockInfo);
+		//creates array of data object values
+		let dataPointObject = stockDataObjectValues[i];
+		let valuesOfDataObject = Object.values(dataPointObject);
 		
-		//map values = data objects
-		let stockDataObjectValues = Object.values(stockInfo);
+		//adds key (Date) to first slot for anychart.js api consumption
+		valuesOfDataObject.unshift(stockDataKeys[i]);
+		valuesOfDataObject.pop();
+		dataArray.push(valuesOfDataObject);
+		arrayOfDataArrays.push(dataArray);
+}
+	return arrayOfDataArrays;
+}
+
+//fetches daily stock data for embedded symbol in model and returns a map of the data: keys = dates, values = data objects
+async function getStockData() {
+	let symbol = [[${stock.symbol}]];
+	let stockInfo = new Map();
+	let response = await fetch("/fetchDailyData/stock/"+symbol);
+    let stockData = await response.json(); 
+    stockInfo = stockData[`Time Series (Daily)`];
+    
+    //reverses array so oldest date is at index 0
+    let arrayOfDatas = dataMapToArray(stockInfo).reverse();
+    
+    return arrayOfDatas;
+}
 	
-		for(let i = 0; i < stockDataKeys.length; i++) {
-			let dataArray = [];
-			
-			//creates array of data object values
-			let dataPointObject = stockDataObjectValues[i];
-			let valuesOfDataObject = Object.values(dataPointObject);
-			
-			//adds key (Date) to first slot for anychart.js api consumption
-			valuesOfDataObject.unshift(stockDataKeys[i]);
-			
-			dataArray.push(valuesOfDataObject);
-			arrayOfDataArrays.push(dataArray);
-	}
-		return arrayOfDataArrays;
-	}
 	
-	//fetches daily stock data for embedded symbol in model and returns a map of the data: keys = dates, values = data objects
-	async function getStockData() {
-		let symbol = [[${stock.symbol}]];
-		let stockInfo = new Map();
-		let response = await fetch("/fetchDailyData/stock/"+symbol);
-	    let stockData = await response.json(); 
-	    stockInfo = stockData[`Time Series (Daily)`];
-	    
-	    //reverses array so oldest date is at index 0
-	    let arrayOfDatas = dataMapToArray(stockInfo).reverse();
-	    
-	    return arrayOfDatas;
-	}
-	//array of data arrays
-	var data =  await getStockData();
 	
-	console.log(data);
-	
+		
 	anychart.onDocumentReady(function () {
-		      
-		      // set chart theme
-		      anychart.theme('monochrome');
-		      
-		      // create data table on loaded data
-		      var dataTable = anychart.data.table();
-		      dataTable.addData(data);
+		
+		getStockData().then(data => {
 
-		      // map loaded data for the candlestick series
-		      var mapping = dataTable.mapAs({
-		        open: 1,
-		        high: 2,
-		        low: 3,
-		        close: 4,
-				volume: 5
-		      });
+		    // set the data
+		    table = anychart.data.table();
+		    
+		    for(let i = 0; i < data.length; i++) {
+		    table.addData(data.pop());
+		    };
+		    // map the data
+		    mapping = table.mapAs();
+		    mapping.addField('open', 1);
+		    mapping.addField('high', 2);
+		    mapping.addField('low', 3);
+		    mapping.addField('close', 4);
+		    mapping.addField('volume', 5);
 
-		      // create stock chart
+		    // create stock chart
 		      var chart = anychart.stock();
 
 		      // create first plot on the chart
@@ -141,51 +141,40 @@
 		      // set grid settings
 		      plot.yGrid(true).xGrid(true).yMinorGrid(true).xMinorGrid(true);
 
-		     
-		      var series = plot.candlestick(mapping);
-		      series.name([[${stock.name}]]);
+		      var series = plot.candlestick(mapping)
+		        .name([[${stock.name}]]);
 		      series.legendItem().iconType('rising-falling');
-		      
-		       // create EMA indicators with period 50
-		      plot
-		        .ema(dataTable.mapAs({ value: 4 }))
-		        .series()
-		        .stroke('1.5 #455a64');
-		      
-		      // create envelope indicator
-		      chart.plot().env(mapping);
-
-		      
-		       // disable X axis for first plot
-		      plot.xAxis().enabled(false);
-		      
-		       // second plot to show macd values
-		      var macdPlot = chart.plot(1);
-
-		      var macdIndicator = macdPlot.macd(mapping);
-		      // set series type for histogram series.
-		      macdIndicator.histogramSeries('area');
-
-		      macdIndicator
-		        .histogramSeries()
-		        .normal()
-		        .fill('green .3')
-		        .stroke('green');
-		      macdIndicator
-		        .histogramSeries()
-		        .normal()
-		        .negativeFill('red .3')
-		        .negativeStroke('red');
-		    
-		      // set second plot's height
-		      macdPlot.height('40%');
-		      
 
 		      // create scroller series with mapped data
 		      chart.scroller().candlestick(mapping);
 
+		      //MACD Indicator
+		      // second plot to show macd values
+			  var indicatorPlot = chart.plot(1);
+
+              // map the values
+              var macdIndicator = indicatorPlot.macd(mapping);
+
+              // set series type for histogram series.
+              macdIndicator.histogramSeries('area');
+
+              macdIndicator
+               .histogramSeries()
+               .normal()
+               .fill('green .3')
+               .stroke('green');
+
+              macdIndicator
+               .histogramSeries()
+               .normal()
+               .negativeFill('red .3')
+               .negativeStroke('red');
+
+              // set second plot's height
+              indicatorPlot.height('40%');
+		      
 		      // set chart selected date/time range
-		      chart.selectRange('2022-08-01', '2022-09-02');
+		      chart.selectRange('2018-08-01', '2022-09-02');
 
 		      // create range picker
 		      var rangePicker = anychart.ui.rangePicker();
@@ -199,8 +188,8 @@
 		      // init range selector
 		      rangeSelector.render(chart);
 		      
-		       // sets the title of the chart
-		      chart.title([[${stock.name}]]+ ' Stock Chart');
+		      // sets the title of the chart
+		      chart.title([[${stock.name}]] + "Chart");
 		      
 		      // set container id for the chart
 		      chart.container('container');
@@ -209,9 +198,106 @@
 		      chart.draw();
 		    
 		});
+	});
+
 	</script>
 </body>
 </html>
 <!--  
+anychart.onDocumentReady(function () {
+	      getStockData()
+			.then(data => {
+				 // set chart theme
+	      anychart.theme('monochrome');
+	      
+	      // create data table on loaded data
+	      var dataTable = anychart.data.table(0);
+	      dataTable.addData(data);
 
+	      // map loaded data for the candlestick series
+	      var mapping = dataTable.mapAs({
+	        open: 1,
+	        high: 2,
+	        low: 3,
+	        close: 4,
+	        volume: 5
+	      });
+
+	      // create stock chart
+	      var chart = anychart.stock();
+
+	      // create first plot on the chart
+	      var plot = chart.plot(0);
+	      
+	      // set grid settings
+	      plot.yGrid(true).xGrid(true).yMinorGrid(true).xMinorGrid(true);
+
+	     
+	      var series = plot.candlestick(mapping);
+	      series.name([[${stock.name}]]);
+	      series.legendItem().iconType('rising-falling');
+	      
+	       // create EMA indicators with period 50
+	      plot
+	        .ema(dataTable.mapAs({ value: 4 }))
+	        .series()
+	        .stroke('1.5 #455a64');
+	      
+	      // create envelope indicator
+	      chart.plot().env(mapping);
+
+	      
+	       // disable X axis for first plot
+	      plot.xAxis().enabled(false);
+	      
+	       // second plot to show macd values
+	      var macdPlot = chart.plot(1);
+
+	      var macdIndicator = macdPlot.macd(mapping);
+	      // set series type for histogram series.
+	      macdIndicator.histogramSeries('area');
+
+	      macdIndicator
+	        .histogramSeries()
+	        .normal()
+	        .fill('green .3')
+	        .stroke('green');
+	      macdIndicator
+	        .histogramSeries()
+	        .normal()
+	        .negativeFill('red .3')
+	        .negativeStroke('red');
+	    
+	      // set second plot's height
+	      macdPlot.height('40%');
+	      
+
+	      // create scroller series with mapped data
+	      chart.scroller().candlestick(mapping);
+
+	      // set chart selected date/time range
+	      chart.selectRange('2022-08-02', '2022-09-02');
+
+	      // create range picker
+	      var rangePicker = anychart.ui.rangePicker();
+	      
+	      // init range picker
+	      rangePicker.render(chart);
+
+	      // create range selector
+	      var rangeSelector = anychart.ui.rangeSelector();
+	      
+	      // init range selector
+	      rangeSelector.render(chart);
+	      
+	       // sets the title of the chart
+	      chart.title([[${stock.name}]]+ ' Stock Chart');
+	      
+	      // set container id for the chart
+	      chart.container('container');
+	      
+	      // initiate chart drawing
+	      chart.draw();
+			});
+	});
 	-->

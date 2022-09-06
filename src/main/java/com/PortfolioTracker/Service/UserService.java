@@ -4,9 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.PortfolioTracker.DTO.StockListing;
 import com.PortfolioTracker.Domain.Authorities;
+import com.PortfolioTracker.Domain.Stock;
 import com.PortfolioTracker.Domain.User;
 import com.PortfolioTracker.Repository.AuthoritiesRepository;
+import com.PortfolioTracker.Repository.CryptoRepository;
+import com.PortfolioTracker.Repository.StockRepository;
 import com.PortfolioTracker.Repository.UserRepository;
 
 @Service
@@ -20,6 +24,12 @@ public class UserService {
 	
 	@Autowired
 	AuthoritiesRepository authRepo;
+	
+	@Autowired
+	StockRepository stockRepo;
+	
+	@Autowired
+	CryptoRepository cryptoRepo;
 	
 	public User findByUserName(String username) {
 		return userRepo.findByUsername(username);
@@ -41,4 +51,15 @@ public class UserService {
 		return userRepo.getById(user.getId());
 	}
 	
+	public User saveStockToUser(User user, StockListing stock) {
+		Stock stockToBeSaved = new Stock();
+		String stockSymbol = stock.getSymbol();
+		stockToBeSaved.setSymbol(stockSymbol);
+		stockToBeSaved.setUser(user);
+		user.getStocks().add(stockToBeSaved);
+		
+		stockRepo.save(stockToBeSaved);
+		
+		return user;
+	}
 }
