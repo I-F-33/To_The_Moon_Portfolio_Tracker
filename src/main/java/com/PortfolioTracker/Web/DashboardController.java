@@ -2,6 +2,7 @@ package com.PortfolioTracker.Web;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.Stack;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,19 +12,23 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.PortfolioTracker.DTO.CryptoListing;
 import com.PortfolioTracker.DTO.Search;
 import com.PortfolioTracker.DTO.StockListing;
+import com.PortfolioTracker.Domain.Stock;
 import com.PortfolioTracker.Domain.User;
 import com.PortfolioTracker.Service.FileService;
+import com.PortfolioTracker.Service.UserService;
 
 @Controller
 public class DashboardController {
 
 	@Autowired
 	FileService fileService;
+	
+	@Autowired
+	UserService userService;
 	
 	
 	private Stack<Search> searches = new Stack<Search>();
@@ -38,7 +43,7 @@ public class DashboardController {
 	
 	
 	@GetMapping("/dashboard/results")
-	public String displayCrpytoResults(ModelMap model) {
+	public String displayCrpytoResults(ModelMap model, @AuthenticationPrincipal User user) {
 		Search latestSearch = searches.pop();
 		
 		//if search category is set to crypto
@@ -46,6 +51,7 @@ public class DashboardController {
 			List<CryptoListing> matchingCrypto = fileService.fetchMatchingCrypto(latestSearch.getSearchString());
 			System.out.println(matchingCrypto.size());
 			model.put("cryptos", matchingCrypto);
+			model.put("user", user);
 			searches.push(latestSearch);
 			return "results.html";
 			
@@ -55,6 +61,7 @@ public class DashboardController {
 			System.out.println(matchingStocks.size());
 			searches.push(latestSearch);
 			model.put("stocks", matchingStocks);
+			model.put("user", user);
 			return "results.html";
 		}
 		//if search fails return to dashboard
@@ -103,6 +110,10 @@ public class DashboardController {
 			
 			return "chart.html";
 			
+			//conditional checks if list of stocks contains stock with matching asset name then fetches the matching stock
+			//and adds to model
+			
+			//models puts latest search to check what type of chart should be displayed
 		} else if(stockList.stream()
 							.anyMatch(stock -> stock.getName().equalsIgnoreCase(name))) {
 			Optional<StockListing> matchingStock = stockList.stream()
@@ -120,5 +131,22 @@ public class DashboardController {
 			return "dashboard.html";
 		}
 	}
+	
+	@GetMapping("/dashboard/myPortfolio/{userId}/stocks")
+	public String getStockPortfolio(@PathVariable Long userId, @AuthenticationPrincipal User user, ModelMap model) {
+		List<StockListing> userStocks = userService.fetchAllUserStocks(userId);
+		
+		if(userStocks.isEmpty()) {
+			return "redirect:/dashboard";
+		}
+		
+		model.put("stocks", userStocks);
+		model.put("user", user);
+		
+		return "stocks.html";
+	}
+	
+	
+	
 	
 }

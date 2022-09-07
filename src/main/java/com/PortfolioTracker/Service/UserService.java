@@ -1,5 +1,10 @@
 package com.PortfolioTracker.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -23,13 +28,16 @@ public class UserService {
 	private UserRepository userRepo;
 	
 	@Autowired
-	AuthoritiesRepository authRepo;
+	private AuthoritiesRepository authRepo;
 	
 	@Autowired
-	StockRepository stockRepo;
+	private StockRepository stockRepo;
 	
 	@Autowired
-	CryptoRepository cryptoRepo;
+	private CryptoRepository cryptoRepo;
+	
+	@Autowired
+	private FileService fileservice;
 	
 	public User findByUserName(String username) {
 		return userRepo.findByUsername(username);
@@ -48,18 +56,37 @@ public class UserService {
 	}
 	
 	public User findById(User user) {
-		return userRepo.getById(user.getId());
+		return userRepo.getById(user.getUser_id());
 	}
 	
-	public User saveStockToUser(User user, StockListing stock) {
+	public User saveStockToUser(Long userId, StockListing stock) {
+		User user = userRepo.findById(userId).get();
 		Stock stockToBeSaved = new Stock();
 		String stockSymbol = stock.getSymbol();
 		stockToBeSaved.setSymbol(stockSymbol);
 		stockToBeSaved.setUser(user);
 		user.getStocks().add(stockToBeSaved);
-		
 		stockRepo.save(stockToBeSaved);
 		
 		return user;
 	}
+	
+	//compares each saved user stock to the list of stock and extracts the matching stocklisting
+	public List<StockListing> fetchAllUserStocks(Long userId) {
+		List<Stock> userStocks = stockRepo.findAllStocksByUserId(userId);
+		List<StockListing> stockList = fileservice.parseStockCsvFileToList();
+		List<StockListing> matchingUserStocks = new ArrayList<>();
+		
+		for(Stock stock : userStocks) {
+			Optional<StockListing> matchingStock = stockList.stream()
+					 .filter(stockListing -> stockListing.getSymbol().equalsIgnoreCase(stock.getSymbol()))
+					 .findFirst();
+			
+			matchingStock.ifPresentOrElse(match -> matchingUserStocks.add(match), () -> System.out.println("no match"));
+		}
+		return matchingUserStocks;
+	}
+	
+	
+	
 }

@@ -1,5 +1,7 @@
 package com.PortfolioTracker.Domain;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -18,17 +20,18 @@ public class User {
 	private String username;
 	private String password;
 	private Set<Authorities> authorities;
-	private Set<Stock> stocks;
-	private Set<Crypto> cryptos;
+	private List<Stock> stocks = new ArrayList<>();
+	private List<Crypto> cryptos = new ArrayList<>();
 
 	
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
-	public Long getId() {
+	public Long getUser_id() {
 		return user_id;
 	}
-	public void setId(Long id) {
-		this.user_id = id;
+	public void setUser_id(Long user_id) {
+		this.user_id = user_id;
 	}
+
 	@Column(nullable = false, unique = true)
 	public String getUsername() {
 		return username;
@@ -51,20 +54,20 @@ public class User {
 	}
 	
 	@OneToMany(fetch=FetchType.LAZY, cascade=CascadeType.ALL, mappedBy="user")
-	public Set<Stock> getStocks() {
+	public List<Stock> getStocks() {
 		return stocks;
 	}
-	public void setStocks(Set<Stock> stocks) {
+	public void setStocks(List<Stock> stocks) {
 		this.stocks = stocks;
 	}
 	
 	@OneToMany(fetch=FetchType.LAZY, cascade=CascadeType.ALL, mappedBy="user")
-	public Set<Crypto> getCryptos() {
+	public List<Crypto> getCryptos() {
 		return cryptos;
 	}
 	
 
-	public void setCryptos(Set<Crypto> cryptos) {
+	public void setCryptos(List<Crypto> cryptos) {
 		this.cryptos = cryptos;
 	}
 	

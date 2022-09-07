@@ -63,6 +63,12 @@
 			</div>
 		</div>
 	</nav>
+	<div class="flex flex-auto justify-center items-center ">
+		<form th:action="@{/{userId}/saveStock(userId = ${user.user_id})}" method="POST">
+	    	<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+			<button type="submit" class="border-double border-slate-400 rounded-full shadow-2xl animate-bounce">Save To My Portfolio</button>
+		</form>
+	</div>
 	<div>
 		<input type="hidden" id="stock-asset" value='${stock.symbol}'/>
 		<input type="hidden" id="stock-asset" value='${stock.name}'/>
@@ -100,6 +106,7 @@ function dataMapToArray(stockInfo) {
 //fetches daily stock data for embedded symbol in model and returns a map of the data: keys = dates, values = data objects
 async function getStockData() {
 	let symbol = [[${stock.symbol}]];
+	console.log(symbol);
 	let stockInfo = new Map();
 	let response = await fetch("/fetchDailyData/stock/"+symbol);
     let stockData = await response.json(); 
@@ -189,7 +196,7 @@ async function getStockData() {
 		      rangeSelector.render(chart);
 		      
 		      // sets the title of the chart
-		      chart.title([[${stock.name}]] + "Chart");
+		      chart.title([[${stock.name}]] + " Chart");
 		      
 		      // set container id for the chart
 		      chart.container('container');

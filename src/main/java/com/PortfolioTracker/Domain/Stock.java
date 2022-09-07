@@ -29,7 +29,7 @@ public class Stock {
 	}
 	
 	@ManyToOne
-	@JoinColumn(name = "user")
+	@JoinColumn(name = "user_id")
 	public User getUser() {
 		return user;
 	}
