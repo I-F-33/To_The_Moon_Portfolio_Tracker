@@ -59,34 +59,35 @@ public class UserService {
 		return userRepo.getById(user.getUser_id());
 	}
 	
-	public User saveStockToUser(Long userId, StockListing stock) {
+	public User saveStockToUser(Long userId, String stockName) {
+		//finds matching stock from list of stocks to get stock data
+		List<StockListing> matchingStocks = fileservice.fetchMatchingStocks(stockName);
+		StockListing matchingStock = matchingStocks.stream()
+					  							   .findFirst()
+					  							   .get();
+		//finds user with matching id
 		User user = userRepo.findById(userId).get();
+		//creates new stock object with all the stock properties user wants saved
 		Stock stockToBeSaved = new Stock();
-		String stockSymbol = stock.getSymbol();
-		stockToBeSaved.setSymbol(stockSymbol);
+		stockToBeSaved.setSymbol(matchingStock.getSymbol());
+		stockToBeSaved.setName(matchingStock.getName());
 		stockToBeSaved.setUser(user);
+		stockToBeSaved.setSector(matchingStock.getSector());
+		stockToBeSaved.setIndustry(matchingStock.getIndustry());
 		user.getStocks().add(stockToBeSaved);
+		System.out.println(stockToBeSaved.getSymbol());
+		System.out.println(stockToBeSaved.getName());
+		System.out.println(stockToBeSaved.getIndustry());
+		System.out.println(stockToBeSaved.getSector());
+
 		stockRepo.save(stockToBeSaved);
 		
 		return user;
 	}
 	
-	//compares each saved user stock to the list of stock and extracts the matching stocklisting
-	public List<StockListing> fetchAllUserStocks(Long userId) {
-		List<Stock> userStocks = stockRepo.findAllStocksByUserId(userId);
-		List<StockListing> stockList = fileservice.parseStockCsvFileToList();
-		List<StockListing> matchingUserStocks = new ArrayList<>();
-		
-		for(Stock stock : userStocks) {
-			Optional<StockListing> matchingStock = stockList.stream()
-					 .filter(stockListing -> stockListing.getSymbol().equalsIgnoreCase(stock.getSymbol()))
-					 .findFirst();
-			
-			matchingStock.ifPresentOrElse(match -> matchingUserStocks.add(match), () -> System.out.println("no match"));
-		}
-		return matchingUserStocks;
+	public List<Stock> fetchAllUserStocks(Long userId) {
+		return stockRepo.findAllStocksByUserId(userId);
 	}
-	
 	
 	
 }

@@ -11,7 +11,10 @@ import javax.persistence.ManyToOne;
 public class Stock {
 	
 	private Long id;
+	private String name;
 	private String symbol;
+	private String sector;
+	private String industry;
 	private User user;
 	
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -35,6 +38,24 @@ public class Stock {
 	}
 	public void setUser(User user) {
 		this.user = user;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getSector() {
+		return sector;
+	}
+	public void setSector(String sector) {
+		this.sector = sector;
+	}
+	public String getIndustry() {
+		return industry;
+	}
+	public void setIndustry(String industry) {
+		this.industry = industry;
 	}
 
 }

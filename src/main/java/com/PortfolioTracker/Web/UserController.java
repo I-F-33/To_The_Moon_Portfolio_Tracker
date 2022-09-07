@@ -14,9 +14,11 @@ public class UserController {
 	@Autowired
 	UserService userService;
 
-	@PostMapping("/{userId}/saveStock")
-	public String saveStockToUser(StockListing stock,@PathVariable Long userId) {
-		userService.saveStockToUser(userId, stock);
+	@PostMapping("/{userId}/{stockName}/saveStock")
+	public String saveStockToUser(@PathVariable String stockName ,@PathVariable Long userId) {
+		userService.saveStockToUser(userId, stockName);
 		return "redirect:/dashboard";
 	}
+	
+	
 }

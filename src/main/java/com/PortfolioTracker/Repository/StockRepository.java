@@ -12,6 +12,6 @@ import com.PortfolioTracker.Domain.Stock;
 @Repository
 public interface StockRepository extends JpaRepository<Stock, Long> {
 
-	@Query(value="SELECT * FROM stock s WHERE s.user = :userId", nativeQuery = true)
+	@Query(value="SELECT * FROM stock s WHERE s.user_id = :userId", nativeQuery = true)
 	List<Stock> findAllStocksByUserId(@Param("userId")Long userId);
 }

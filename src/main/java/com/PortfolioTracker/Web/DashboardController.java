@@ -84,7 +84,7 @@ public class DashboardController {
 		return "redirect:/dashboard/results";
 	}
 	
-	@GetMapping("/dashboard/stock/chart/{name}")
+	@GetMapping("/dashboard/chart/{name}")
 	public String fetchAssetChart(@AuthenticationPrincipal User user, @PathVariable String name, ModelMap model) {
 		List<CryptoListing> cryptoList = fileService.parseCryptoCsvFileToList();
 		List<StockListing> stockList = fileService.parseStockCsvFileToList();
@@ -98,27 +98,30 @@ public class DashboardController {
 		
 		//models puts latest search to check what type of chart should be displayed
 		if(cryptoList.stream()
-					 .anyMatch(crypto -> crypto.getName().equalsIgnoreCase(name))) {
+					 .anyMatch(crypto -> crypto.getName()
+							 				   .equalsIgnoreCase(name))) {
 			Optional<CryptoListing> matchingCrypto = cryptoList.stream()
-					  .filter(crypto -> crypto.getName().equalsIgnoreCase(name))
-					  .findFirst();
+					  										   .filter(crypto -> crypto.getName().equalsIgnoreCase(name))
+					  										   .findFirst();
 			
 			
-			
+			System.out.println(matchingCrypto);
 			model.put("crypto", matchingCrypto.get());
 			model.put("search", latestSearch);
+			searches.push(latestSearch);
 			
-			return "chart.html";
+			return "crypto_chart.html";
 			
 			//conditional checks if list of stocks contains stock with matching asset name then fetches the matching stock
 			//and adds to model
 			
 			//models puts latest search to check what type of chart should be displayed
 		} else if(stockList.stream()
-							.anyMatch(stock -> stock.getName().equalsIgnoreCase(name))) {
+						   .anyMatch(stock -> stock.getName()
+												   .equalsIgnoreCase(name))) {
 			Optional<StockListing> matchingStock = stockList.stream()
-					 .filter(stock -> stock.getName().equalsIgnoreCase(name))
-					 .findFirst();
+					 										.filter(stock -> stock.getName().equalsIgnoreCase(name))
+					 										.findFirst();
 				
 				System.out.println(matchingStock);
 				model.put("stock", matchingStock.get());
@@ -134,7 +137,7 @@ public class DashboardController {
 	
 	@GetMapping("/dashboard/myPortfolio/{userId}/stocks")
 	public String getStockPortfolio(@PathVariable Long userId, @AuthenticationPrincipal User user, ModelMap model) {
-		List<StockListing> userStocks = userService.fetchAllUserStocks(userId);
+		List<Stock> userStocks = userService.fetchAllUserStocks(userId);
 		
 		if(userStocks.isEmpty()) {
 			return "redirect:/dashboard";
@@ -143,7 +146,7 @@ public class DashboardController {
 		model.put("stocks", userStocks);
 		model.put("user", user);
 		
-		return "stocks.html";
+		return "my_portfolio.html";
 	}
 	
 	

@@ -74,10 +74,10 @@
 					<li><a th:href="@{/dashboard}"
 						class="block py-2 pr-4 pl-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white"
 						aria-current="page">Home</a></li>
-					<li><a th:href="@{{userId}/myportfolio/stocks(userId=${user.userId})}"
+					<li><a th:href="@{/dashboard/myPortfolio/{userId}/stocks(userId=${user.user_id})}"
 						class="block py-2 pr-4 pl-3 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-white dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">My
 							Stocks</a></li>
-					<li><a th:href="@{{userId}/myportfolio/crypto(userId=${user.userId})}"
+					<li><a th:href="@{{userId}/myportfolio/crypto(userId=${user.user_id})}"
 						class="block py-2 pr-4 pl-3 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">My
 							Crypto</a></li>
 					<li><a th:href="@{/logout}"
@@ -88,7 +88,7 @@
 		</div>
 	</nav>
 	
-	<div class="overflow-x-auto relative shadow-md sm:rounded-lg">
+		<div th:if="${stocks !=  null}" class="overflow-x-auto relative shadow-md sm:rounded-lg">
 		<table
 			class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
 			<thead
@@ -98,21 +98,34 @@
 					<th scope="col" class="py-3 px-6">Symbol</th>
 					<th scope="col" class="py-3 px-6">Sector</th>
 					<th scope="col" class="py-3 px-6">Industry</th>
-					<th scope="col" class="py-3 px-6">Price</th>
-					<th scope="col" class="py-3 px-6">Action</th>
 				</tr>
 			</thead>
 			<tbody>
-				<tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+				<tr th:each="stock : ${stocks}" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
 					<th scope="row"
-						class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-						Apple MacBook Pro 17"</th>
-					<td class="py-4 px-6">Sliver</td>
-					<td class="py-4 px-6">Laptop</td>
-					<td class="py-4 px-6">$2999</td>
-					<td class="py-4 px-6"><a th:href="@/{userId}/myportfolio/delete(userId=${user.userId})"
-						class="font-medium text-blue-600 dark:text-red-500 hover:underline">Delete</a>
-					</td>
+						class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"><a th:text="${stock.name}" th:href="@{/dashboard/chart/{name}(name = ${stock.name})}" ></a></th>
+					<td th:text="${stock.symbol}" class="py-4 px-6"></td>
+					<td th:text="${stock.sector}" class="py-4 px-6"></td>
+					<td th:text="${stock.industry}" class="py-4 px-6">$</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div th:if="${cryptos !=  null}" class="overflow-x-auto relative shadow-md sm:rounded-lg">
+		<table
+			class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+			<thead
+				class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+				<tr>
+					<th scope="col" class="py-3 px-6">Crypto name</th>
+					<th scope="col" class="py-3 px-6">Crypto Symbol</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="crypto : ${cryptos}" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+					<th scope="row"
+						class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"><a th:text="${crypto.name}" th:href="@{/dashboard/crypto/chart/{name}(name = ${crypto.name})}"></a></th>
+					<td th:text="${crypto.symbol}" class="py-4 px-6"></td>
 				</tr>
 			</tbody>
 		</table>
