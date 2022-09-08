@@ -98,8 +98,8 @@ public class UserService {
 		cryptoToBeSaved.setUser(user);
 		user.getCryptos().add(cryptoToBeSaved);
 		
-		cryptoRepo.save(cryptoToBeSaved);
 		
+		cryptoRepo.save(cryptoToBeSaved);
 		return user;
 	}
 	
@@ -109,6 +109,26 @@ public class UserService {
 	
 	public List<Crypto> fetchAllUserCrypto(Long userId) {
 		return cryptoRepo.fetchAllCryptoByUserId(userId);
+	}
+	
+	public void deleteCryptoFromUser(String cryptoName, Long userId) {
+		List<Crypto> userCryptos = cryptoRepo.fetchAllCryptoByUserId(userId);
+		Crypto cryptoToBeDeleted = userCryptos.stream()
+				   .filter(crypto -> crypto.getName().equalsIgnoreCase(cryptoName))
+				   .findFirst()
+				   .get();
+		cryptoRepo.delete(cryptoToBeDeleted);
+	}
+	
+	public void deleteStockFromUser(String stockName, Long userId) {
+		List<Stock> userStocks = stockRepo.findAllStocksByUserId(userId);
+		
+		Stock stockToBeDeleted = userStocks.stream()
+				                           .filter(stock -> stock.getName().equalsIgnoreCase(stockName))
+			                               .findFirst()
+			                               .get();
+		
+		stockRepo.delete(stockToBeDeleted);
 	}
 	
 	

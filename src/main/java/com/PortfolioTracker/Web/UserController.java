@@ -25,4 +25,16 @@ public class UserController {
 		return "redirect:/dashboard";
 	}
 	
+	@PostMapping("/{userId}/{stockName}/deleteStock")
+	public String deleteStockFromUser(@PathVariable String stockName, @PathVariable Long userId) {
+		userService.deleteStockFromUser(stockName, userId);
+		return "redirect:/dashboard";
+	}
+	
+	@PostMapping("/{userId}/{cryptoName}/deleteCrypto")
+	public String deleteCryptoFromUser(@PathVariable String cryptoName, @PathVariable Long userId) {
+		userService.deleteCryptoFromUser(cryptoName, userId);
+		return "redirect:/dashboard";
+	}
+	
 }

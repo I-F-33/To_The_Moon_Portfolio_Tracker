@@ -13,5 +13,6 @@ import com.PortfolioTracker.Domain.Crypto;
 public interface CryptoRepository extends JpaRepository<Crypto, Long>{
 
 	@Query(value="SELECT * FROM crypto c WHERE c.user_id = :userId", nativeQuery = true)
-	List<Crypto> fetchAllCryptoByUserId(@Param("userId")Long userId);
+	public List<Crypto> fetchAllCryptoByUserId(@Param("userId")Long userId);
+	
 }

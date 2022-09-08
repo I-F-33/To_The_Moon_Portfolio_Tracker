@@ -53,7 +53,7 @@ public class User {
 		this.authorities = authorities;
 	}
 	
-	@OneToMany(fetch=FetchType.LAZY, cascade=CascadeType.ALL, mappedBy="user")
+	@OneToMany(fetch=FetchType.LAZY, cascade=CascadeType.ALL, mappedBy="user", orphanRemoval = true)
 	public List<Stock> getStocks() {
 		return stocks;
 	}
@@ -61,7 +61,7 @@ public class User {
 		this.stocks = stocks;
 	}
 	
-	@OneToMany(fetch=FetchType.LAZY, cascade=CascadeType.ALL, mappedBy="user")
+	@OneToMany(fetch=FetchType.LAZY, cascade=CascadeType.ALL, mappedBy="user", orphanRemoval = true)
 	public List<Crypto> getCryptos() {
 		return cryptos;
 	}
