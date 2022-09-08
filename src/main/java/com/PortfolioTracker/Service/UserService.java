@@ -54,8 +54,8 @@ public class UserService {
 		return user;
 	}
 	
-	public User findById(User user) {
-		return userRepo.getById(user.getUser_id());
+	public User findById(Long userId) {
+		return userRepo.getById(userId);
 	}
 	
 	public User saveStockToUser(Long userId, String stockName) {

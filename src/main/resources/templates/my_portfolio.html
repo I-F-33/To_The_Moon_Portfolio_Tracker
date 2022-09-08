@@ -103,7 +103,7 @@
 			<tbody>
 				<tr th:each="stock : ${stocks}" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
 					<th scope="row"
-						class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"><a th:text="${stock.name}" th:href="@{/dashboard/chart/{name}(name = ${stock.name})}" ></a></th>
+						class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"><a th:text="${stock.name}" th:href="@{/dashboard/chart/{userId}/{name}(name = ${stock.name}, userId = ${user.user_id})}" ></a></th>
 					<td th:text="${stock.symbol}" class="py-4 px-6"></td>
 					<td th:text="${stock.sector}" class="py-4 px-6"></td>
 					<td th:text="${stock.industry}" class="py-4 px-6">$</td>
@@ -124,7 +124,7 @@
 			<tbody>
 				<tr th:each="crypto : ${cryptos}" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
 					<th scope="row"
-						class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"><a th:text="${crypto.name}" th:href="@{/dashboard/chart/{name}(name = ${crypto.name})}"></a></th>
+						class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"><a th:text="${crypto.name}" th:href="@{/dashboard/chart/{userId}/{name}(name = ${crypto.name}, userId = ${user.user_id})}"></a></th>
 					<td th:text="${crypto.symbol}" class="py-4 px-6"></td>
 				</tr>
 			</tbody>

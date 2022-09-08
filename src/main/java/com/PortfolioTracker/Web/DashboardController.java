@@ -1,8 +1,6 @@
 package com.PortfolioTracker.Web;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
 import java.util.Stack;
 import java.util.stream.Collectors;
 
@@ -86,20 +84,20 @@ public class DashboardController {
 		return "redirect:/dashboard/results";
 	}
 	
-	@GetMapping("/dashboard/chart/{name}")
-	public String fetchAssetChart(@AuthenticationPrincipal User user, @PathVariable String name, ModelMap model) {
+	@GetMapping("/dashboard/chart/{userId}/{name}")
+	public String fetchAssetChart(@AuthenticationPrincipal User user, @PathVariable String name, @PathVariable Long userId,ModelMap model) {
 		List<CryptoListing> cryptoList = fileService.parseCryptoCsvFileToList();
 		List<StockListing> stockList = fileService.parseStockCsvFileToList();
 		//users stock symbols: used to check whether user has stock already saved.
 		//used in conditional to display save button or not
-		List<String> userStockSymbols = userService.fetchAllUserStocks(user.getUser_id()).stream()
-																				  .map(stock -> stock.getSymbol())
-																				  .collect(Collectors.toList());
+		List<String> userStockSymbols = userService.fetchAllUserStocks(userId).stream()
+																			  .map(stock -> stock.getSymbol())
+																			  .collect(Collectors.toList());
 		//users saved crypto symbols: used to check whether user has crypto already saved.
 		//used in conditional to display save button or not
-		List<String> userCryptoSymbols = userService.fetchAllUserCrypto(user.getUser_id()).stream()
-																				   .map(crypto -> crypto.getSymbol())
-																				   .collect(Collectors.toList());
+		List<String> userCryptoSymbols = userService.fetchAllUserCrypto(userId).stream()
+																			   .map(crypto -> crypto.getSymbol())
+																			   .collect(Collectors.toList());
 		
 		System.out.println(name);
 		model.put("user", user);
@@ -146,8 +144,7 @@ public class DashboardController {
 				
 				return "stock_chart.html";
 		} else {
-			model.put("search", new Search());
-			return "dashboard.html";
+			return "redirect:/dashboard";
 		}
 	}
 	
