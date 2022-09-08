@@ -12,6 +12,7 @@ public class Crypto {
 	
 	private Long id;
 	private String symbol;
+	private String name;
 	private User user;
 	
 	@Id @GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -35,6 +36,12 @@ public class Crypto {
 	}
 	public void setUser(User user) {
 		this.user = user;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
 	}
 
 }

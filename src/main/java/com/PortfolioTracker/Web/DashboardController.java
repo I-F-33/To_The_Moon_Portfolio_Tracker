@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.Stack;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import com.PortfolioTracker.DTO.CryptoListing;
 import com.PortfolioTracker.DTO.Search;
 import com.PortfolioTracker.DTO.StockListing;
+import com.PortfolioTracker.Domain.Crypto;
 import com.PortfolioTracker.Domain.Stock;
 import com.PortfolioTracker.Domain.User;
 import com.PortfolioTracker.Service.FileService;
@@ -88,6 +90,16 @@ public class DashboardController {
 	public String fetchAssetChart(@AuthenticationPrincipal User user, @PathVariable String name, ModelMap model) {
 		List<CryptoListing> cryptoList = fileService.parseCryptoCsvFileToList();
 		List<StockListing> stockList = fileService.parseStockCsvFileToList();
+		//users stock symbols: used to check whether user has stock already saved.
+		//used in conditional to display save button or not
+		List<String> userStockSymbols = userService.fetchAllUserStocks(user.getUser_id()).stream()
+																				  .map(stock -> stock.getSymbol())
+																				  .collect(Collectors.toList());
+		//users saved crypto symbols: used to check whether user has crypto already saved.
+		//used in conditional to display save button or not
+		List<String> userCryptoSymbols = userService.fetchAllUserCrypto(user.getUser_id()).stream()
+																				   .map(crypto -> crypto.getSymbol())
+																				   .collect(Collectors.toList());
 		
 		System.out.println(name);
 		model.put("user", user);
@@ -100,14 +112,16 @@ public class DashboardController {
 		if(cryptoList.stream()
 					 .anyMatch(crypto -> crypto.getName()
 							 				   .equalsIgnoreCase(name))) {
-			Optional<CryptoListing> matchingCrypto = cryptoList.stream()
-					  										   .filter(crypto -> crypto.getName().equalsIgnoreCase(name))
-					  										   .findFirst();
+			CryptoListing matchingCrypto = cryptoList.stream()
+					  								 .filter(crypto -> crypto.getName().equalsIgnoreCase(name))
+					  								 .findFirst()
+					  								 .get();
 			
 			
 			System.out.println(matchingCrypto);
-			model.put("crypto", matchingCrypto.get());
+			model.put("crypto", matchingCrypto);
 			model.put("search", latestSearch);
+			model.put("userCryptos", userCryptoSymbols);
 			searches.push(latestSearch);
 			
 			return "crypto_chart.html";
@@ -119,13 +133,15 @@ public class DashboardController {
 		} else if(stockList.stream()
 						   .anyMatch(stock -> stock.getName()
 												   .equalsIgnoreCase(name))) {
-			Optional<StockListing> matchingStock = stockList.stream()
-					 										.filter(stock -> stock.getName().equalsIgnoreCase(name))
-					 										.findFirst();
+			StockListing matchingStock = stockList.stream()
+					 							  .filter(stock -> stock.getName().equalsIgnoreCase(name))
+					 							  .findFirst()
+					 							  .get();
 				
 				System.out.println(matchingStock);
-				model.put("stock", matchingStock.get());
+				model.put("stock", matchingStock);
 				model.put("search", latestSearch);
+				model.put("userStocks", userStockSymbols);
 				searches.push(latestSearch);
 				
 				return "stock_chart.html";
@@ -144,6 +160,20 @@ public class DashboardController {
 		}
 		
 		model.put("stocks", userStocks);
+		model.put("user", user);
+		
+		return "my_portfolio.html";
+	}
+	
+	@GetMapping("/dashboard/myPortfolio/{userId}/crypto")
+	public String getCryptoPortfolio(@PathVariable Long userId, @AuthenticationPrincipal User user, ModelMap model) {
+		List<Crypto> userCryptos = userService.fetchAllUserCrypto(userId);
+		
+		if(userCryptos.isEmpty()) {
+			return "redirect:/dashboard";
+		}
+		
+		model.put("cryptos", userCryptos);
 		model.put("user", user);
 		
 		return "my_portfolio.html";
