@@ -7,8 +7,11 @@ The TTM Portfolio Tracker assists you with maintaining a close eye on your impor
 Technologies used
 
 Languages: Java, SQL, Javascript, HTML, CSS
-Frameworks :Spring framework(Spring Security, Spring Data, Spring Web), Hibernate, Thymeleaf, Tailwind CSS
+
+Frameworks : Spring framework(Spring Security, Spring Data, Spring Web), Hibernate, Thymeleaf, Tailwind CSS
+
 Database : MySQL
+
 API : Alpa Vantage Financial Data Rest API
 
 I plan to implement autocomplete functionality to the users search and expand the types of investments.
