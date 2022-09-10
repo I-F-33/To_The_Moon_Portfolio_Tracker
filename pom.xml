@@ -15,6 +15,7 @@
 	<artifactId>To_The_Moon_Portfolio_Tracker</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>To_The_Moon_Portfolio_Tracker</name>
+	<packaging>jar</packaging>
 	<description>Full Stack chat application built to track and record prices of assets which catch your interest</description>
 
 	<properties>

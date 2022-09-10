@@ -1,0 +1,29 @@
+.banner{
+    background-image: url(/images/banner-image.jpg);
+	background-repeat: no-repeat;
+	background-size: cover;
+	height: 900px;
+	display:flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+.welcome{
+	font-family: "Audiowide", sans-serif;
+	font-size: 100px;
+	vertical-align: top;
+	color: white;
+}
+
+.search{
+	font-size: 45px;
+	font-family: "Audiowide", sans-serif;
+	color: white;
+}
+
+.instructions {
+	font-family: "Audiowide", sans-serif;
+	font-size: 30px;
+	color: white;
+}
